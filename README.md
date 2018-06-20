@@ -31,6 +31,6 @@
 
 贊助
 -------------------
-###### 如果這個專案減少了你的開發時間，你可以贊助我一杯咖啡 :D
+###### 如果這個專案對你很有幫助，你可以贊助我一杯咖啡 :D
 ###### XMR 贊助位址
 ###### 448CUe2q4Ecf9tx6rwanrqM9kfCwqpNbhJ5jtrTf9FHqHNq7Lvv9uBoQ74SEaAu9FFceNBr6p3W1yhqPcxPPSSTv2ctufnQ
