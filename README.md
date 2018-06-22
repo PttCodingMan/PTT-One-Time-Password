@@ -1,7 +1,7 @@
 ![PTTOTP: A PTT One-Time Password Bot in Python](https://i.imgur.com/zFxDCU7.png)
 # PTT One-Time Password
 
-###### PTT One-Time Password 是一個由 Python 實現的 PTT 動態登入密碼，你可以在任何支援 python 的電腦執行此程式，就可以享受 PTT One-Time Password 給予的安全性
+###### PTT One-Time Password 是一個由 Python 實現的 PTT 動態登入密碼，你可以在你的電腦上執行此程式，就可以享受 PTT One-Time Password 給予的安全性
 ###### 
 ###### 測試平台: Windows 10, Ubuntu 18.04
 ###### 原始碼
