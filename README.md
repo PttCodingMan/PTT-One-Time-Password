@@ -24,7 +24,7 @@
 ###### 1. [下載程式](https://github.com/Truth0906/PTTOTP/releases)
 ###### 2. 下載 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
 ###### 3. 輸入您的 PTT 帳號密碼
-###### 4. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode
+###### 4. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode，以將 One-Time Password 金鑰匯進 Google Authenticator 中
 ###### 5. 保持 PTT One-Time Password 的運作
 ##### 登入
 ###### 1. 打開 Google Authenticator
