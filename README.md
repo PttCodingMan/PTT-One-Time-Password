@@ -33,10 +33,9 @@ How it works
 
 重要
 -------------------
-###### 初始化程式後，會在程式資料夾產生一個 OTPConfig.txt 內含所有 PTT One-Time Password 相關重要資訊，請妥當保管備份。
-###### 如果遺失，作者也無法將您的帳號密碼恢復，請洽 PTT 帳號部，協助恢復您的帳號密碼。
-###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重新重啟程式，
-###### 程式會自動恢復您的 One-Time Password 功能。
+###### 初始化 PTT One-Time Password 後，會產生 OTPConfig.txt 檔案內含所有 PTT One-Time Password 相關重要資訊，會自動在程式資料夾還有系統使用者資料夾中備份，以保護您 One-Time Password 金鑰的安全。
+###### 一旦所有備份皆遺失或者硬碟毀損，作者也無法將您的帳號密碼恢復，請洽 PTT 帳號部，協助恢復您的帳號密碼。
+###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重新重啟程式，PTT One-Time Password 會自動恢復您的 One-Time Password 功能。
 
 演算法
 -------------------
