@@ -10,20 +10,26 @@
 
 什麼是 One-Time Password
 -------------------
-###### 以下節錄自 "一次性密碼" Wiki
+###### 以下節錄自 [一次性密碼](https://zh.wikipedia.org/wiki/%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A2%BC) Wiki
 ###### 一次性密碼（英語：One Time Password，簡稱OTP），又稱動態密碼或單次有效密碼，是指電腦系統或其他數位裝置上只能使用一次的密碼，有效期為只有一次登錄會話或交易。OTP 避免了一些與傳統基於（靜態）密碼認證相關聯的缺點；一些實作還納入了雙因素認證，確保單次有效密碼需要存取一個人有的某件事物（如內建 OTP 電腦的小鑰匙掛件裝置）以及一個人知道的某件事物（如 PIN）。
 
 為什麼我需要 One-Time Password
 -------------------
-###### 簡單來說，如果您希望可以提升帳號的安全性，防止有人嘗試不合法地存取您的 PTT帳號，那麼 PTT One-Time Password 就是你的首選。
-###### 透過 One-Time Password 不斷更換的特性，確保帳號存取安全，有效解決帳號/ 密碼被盜用的風險。
+###### 如果您希望可以提升帳號的安全性，防止有人嘗試不合法地存取您的 PTT帳號，那麼 PTT One-Time Password 就是你的首選。
+###### 透過 One-Time Password 不斷更換的特性，確保帳號存取安全，有效降低帳號/密碼被盜用的風險。
+
+如何使用
+-------------------
+###### 1. [下載程式](https://github.com/Truth0906/PTTOTP/releases)
+###### 2. 下載 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
+###### 3. 輸入您的 PTT 帳號密碼
+###### 4. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode
+###### 5. 保持 PTT One-Time Password 的運作
 
 How it works
 -------------------
-###### 您需要一台連接網路的主機，作為 PTT One-Time Password 主機，需要 PTT One-Time Password 保護您的帳號時，需要
-###### 保持開啟狀態。
-###### PTT One-Time Password 在保護您的 PTT 帳號期間，會根據演算法產生的 One-Time Password 去定期地去修改 PTT 帳號
-###### 的密碼，以達到動態密碼的效果。
+###### 您需要一台連接網路的主機，作為 PTT One-Time Password 主機。
+###### PTT One-Time Password 在保護您的 PTT 帳號期間，會根據演算法產生的 One-Time Password 去定期地去修改 PTT 帳號密碼，以達到動態密碼的效果。
 
 重要
 -------------------
@@ -31,6 +37,10 @@ How it works
 ###### 如果遺失，作者也無法將您的帳號密碼恢復，請洽 PTT 帳號部，協助恢復您的帳號密碼。
 ###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重新重啟程式，
 ###### 程式會自動恢復您的 One-Time Password 功能。
+
+演算法
+-------------------
+###### PTT One-Time Password 使用的演算法已經列在 [RFC6238](https://tools.ietf.org/html/rfc6238) 中
 
 版本
 -------------------
