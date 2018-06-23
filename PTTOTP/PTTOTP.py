@@ -214,7 +214,7 @@ if not readOTPConfig('OTPConfig.txt'):
         
         if GenOTPKey:
             
-            with open('eula.txt') as EulaFile:
+            with open('eula.txt', encoding='utf-8') as EulaFile:
                 Eula = EulaFile.read()
             
             EulaPart = ''

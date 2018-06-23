@@ -17,8 +17,10 @@ VersionFileStr = VersionStr.replace(' ', '_')
 if os.name == 'nt':
     OutputFileName = 'PTTOTP.exe'
     OutputFile = './dist/' + OutputFileName
-
-    os.remove(OutputFile)
+    try:
+        os.remove(OutputFile)
+    except:
+        pass
     subprocess.run(['pyinstaller', '--onefile', '--icon=./PTTOTP/Res/PTTOTP.ico', './PTTOTP/PTTOTP.py'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     if not os.path.isfile(OutputFile):
@@ -28,7 +30,7 @@ if os.name == 'nt':
 
     print('目前版本: ' + VersionStr)
 
-    WindowsPackFolder = 'PTTOTP_Windows_' + VersionFileStr
+    WindowsPackFolder = 'PTTOTP_Windows_' + VersionFileStr + '/'
 
     try:
         shutil.rmtree(WindowsPackFolder)
@@ -37,11 +39,17 @@ if os.name == 'nt':
     time.sleep(1)
     os.mkdir(WindowsPackFolder)
 
-    copyfile(OutputFile, WindowsPackFolder + '/' + OutputFileName)
+    PackFileList = [
+        ('./dist/', 'PTTOTP.exe'), 
+        ('./PTTOTP/', 'eula.txt'),
+        ('./PTTOTP/', 'Res'),
+    ]
 
-    if not os.path.isfile(WindowsPackFolder + '/' + OutputFileName):
-        print('打包失敗')
-        sys.exit()
+    for Path, File in PackFileList:
+        if os.path.isfile(Path + File):
+            copyfile(Path + File, WindowsPackFolder + File)
+    else:
+        shutil.copytree(Path + File, WindowsPackFolder + File)
 
     print('Windows 版本 PTT One-Time Password 打包成功')
 
