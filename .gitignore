@@ -7,3 +7,4 @@ PTTOTP.egg-info/
 __pycache__/
 build/
 PTTOTP_*/
+*.zip
