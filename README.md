@@ -62,8 +62,8 @@ How it works
 
 相依函式庫
 -------------------
-###### PTTLibrary
-###### pyotp
+###### [PTTLibrary](https://github.com/Truth0906/PTTLibrary)
+###### [pyotp](https://github.com/pyotp/pyotp)
 
 未來工作
 -------------------
