@@ -11,6 +11,7 @@ import Version
 from shutil import copyfile
 import webbrowser
 import subprocess
+import urllib.request
 
 def log(InputMessage):
     TotalMessage = "[" + strftime("%m-%d %H:%M:%S") + "][OTP] " + InputMessage
@@ -180,14 +181,18 @@ log('最新版本檢查')
 
 NumberStr = '0123456789'
 
-RemoteVersion = subprocess.run(['pip', 'search', 'PTTOTP'], stdout=subprocess.PIPE).stdout.decode('utf-8')
-RemoteVersion = RemoteVersion[RemoteVersion.find('(') + 1 : RemoteVersion.find(')')]
+link = "https://pypi.org/pypi/PTTOTP/json"
+
+PypiWeb = urllib.request.urlopen(link)
+PypiWebResult = PypiWeb.read().decode('utf-8')
+PackageJson = json.loads(PypiWebResult)
+
+RemoteVersion = str(PackageJson['info']['version'])
 
 RemoteVersionTemp = RemoteVersion
 RemoteVersionTemp = ''.join(c for c in RemoteVersionTemp if c in NumberStr)
 
 CurrentVersionTemp = Version.Ver
-CurrentVersionTemp = CurrentVersionTemp[:CurrentVersionTemp.find(' ')]
 CurrentVersionTemp = ''.join(c for c in CurrentVersionTemp if c in NumberStr)
 
 # print(RemoteVersionTemp)
@@ -230,7 +235,7 @@ if not readOTPConfig('OTPConfig.txt'):
                 print('PTT One-Time Password 感謝您')
                 if C != 'yes':
                     sys.exit()
-                EulaPart += '請問您同意以上條款? (yes/no)\n: yes'
+                EulaPart += '========================\n請問您同意以上條款? (yes/no)\n: yes'
                 
                 with open('eula.txt', 'w') as EulaFile:
                     EulaFile.write(EulaPart)
