@@ -43,6 +43,7 @@ How it works
 ###### 一旦遺失所有備份或者硬碟毀損，作者也無法將您的帳號密碼恢復，請洽 PTT 帳號部，協助恢復您的帳號密碼。
 ###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重新重啟程式，PTT One-Time Password 會自動恢復您的 One-Time Password 功能。
 ###### PTT One-Time Password，會顯示並儲存敏感資訊，請勿在公共電腦上執行 PTT One-Time Password。
+###### 切勿同時執行兩個以上 PTT One-Time Password 程式。
 
 演算法
 -------------------
