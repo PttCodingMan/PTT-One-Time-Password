@@ -146,16 +146,14 @@ def readOTPConfig(FileName):
     global Password
     global LastPassword
     global PrePassword
-
-    if os.path.isfile(FileName):
+    
+    if not os.path.isfile(FileName):
         return False
-
     try:
         with open(FileName) as OTPConfigFile:
             OTPConfig = json.load(OTPConfigFile)
     except:
         return False
-    
     try:
         ID = OTPConfig['ID']
         Password = OTPConfig['Password']
@@ -219,39 +217,42 @@ if not readOTPConfig('OTPConfig.txt'):
                 GenOTPKey = True
         else:
             GenOTPKey = True
+    else:
+        GenOTPKey = True
+    if GenOTPKey:
         
-        if GenOTPKey:
+        with open('eula.txt', encoding='utf-8') as EulaFile:
+            Eula = EulaFile.read()
+        
+        EulaPart = ''
+        if not ': yes' in Eula:
+            print('請詳閱以下內容')
+            for line in Eula.split('\n'):
+                if '========================' in line:
+                    break
+                EulaPart += line + '\n'
+                print(line)
             
-            with open('eula.txt', encoding='utf-8') as EulaFile:
-                Eula = EulaFile.read()
+            C = input('請問您同意以上條款?(yes/no): ').lower()
+            print('PTT One-Time Password 感謝您')
+            if C != 'yes':
+                sys.exit()
+            EulaPart += '========================\n請問您同意以上條款? (yes/no)\n: yes'
             
-            EulaPart = ''
-            if not ': yes' in Eula:
-                print('請詳閱以下內容')
-                for line in Eula.split('\n'):
-                    if '========================' in line:
-                        break
-                    EulaPart += line + '\n'
-                    print(line)
-                
-                C = input('請問您同意以上條款?(yes/no): ').lower()
-                print('PTT One-Time Password 感謝您')
-                if C != 'yes':
-                    sys.exit()
-                EulaPart += '========================\n請問您同意以上條款? (yes/no)\n: yes'
-                
-                with open('eula.txt', 'w') as EulaFile:
-                    EulaFile.write(EulaPart)
-            
-            print('初次使用將引導您輸入必要資訊，初始化後請嚴加保存 OTPConfig.txt')
-            getIDPW()
-            genOTPKey()
-            setLastPassword()
-        with open('OTPConfig.txt', 'w') as OTPConfigFile:
-                json.dump(OTPConfig, OTPConfigFile)
+            with open('eula.txt', 'w', encoding='utf-8') as EulaFile:
+                EulaFile.write(EulaPart)
+        
+        print('初次使用將引導您輸入必要資訊，初始化後請嚴加保存 OTPConfig.txt')
+        getIDPW()
+        genOTPKey()
+        setLastPassword()
+
+    with open('OTPConfig.txt', 'w') as OTPConfigFile:
+        json.dump(OTPConfig, OTPConfigFile)
+
 OTP = pyotp.TOTP(OTPKey)
-PTTBot = PTT.Library()
-ErrCode = PTTBot.login(ID, Password)
+PTTBot = PTT.Library(ID, Password)
+ErrCode = PTTBot.login()
 if ErrCode != PTT.ErrorCode.Success:
     ErrCode = PTTBot.login(ID, LastPassword)
     if ErrCode != PTT.ErrorCode.Success:
