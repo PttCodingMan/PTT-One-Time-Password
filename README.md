@@ -21,14 +21,13 @@
 如何使用
 -------------------
 ##### 安裝
-###### 1. [下載程式](https://github.com/Truth0906/PTTOTP/releases)
-###### 2. 下載 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
-###### 3. 執行 PTT One-Time Password 並輸入您的 PTT 帳號密碼
-###### 4. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode，以將 One-Time Password 金鑰匯進 Google Authenticator 中
-###### 5. 保持 PTT One-Time Password 的運作
+###### 1. 下載 PTT One-Time Password [下載](https://github.com/Truth0906/PTTOTP/releases) 與 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
+###### 2. 執行 PTT One-Time Password 並輸入您的 PTT 帳號密碼
+###### 3. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode，以將 One-Time Password 金鑰匯進 Google Authenticator 中
+###### 4. 保持 PTT One-Time Password 的運作
 ##### 登入
 ###### 1. 打開 Google Authenticator
-###### 2. 使用 Google Authenticator 上所顯示的 One-Time Password 當作 PTT 帳號的密碼登入
+###### 2. 複製 Google Authenticator 上所顯示的 One-Time Password 當作 PTT 帳號的密碼登入
 ##### 解除
 ###### 1. 點選執行中的 PTT One-Time Password
 ###### 2. 按下 Ctrl + C 程式會自動將您的 PTT 帳號密碼恢復原樣
