@@ -146,7 +146,10 @@ def readOTPConfig(FileName):
     global Password
     global LastPassword
     global PrePassword
-    
+
+    if os.path.isfile(FileName):
+        return False
+
     try:
         with open(FileName) as OTPConfigFile:
             OTPConfig = json.load(OTPConfigFile)
