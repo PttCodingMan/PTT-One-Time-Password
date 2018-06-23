@@ -13,22 +13,21 @@
 ###### 以下節錄自 [一次性密碼](https://zh.wikipedia.org/wiki/%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A2%BC) Wiki
 ###### 一次性密碼（英語：One Time Password，簡稱OTP），又稱動態密碼或單次有效密碼，是指電腦系統或其他數位裝置上只能使用一次的密碼，有效期為只有一次登錄會話或交易。
 
-為什麼我需要 One-Time Password
+為什麼需要 One-Time Password
 -------------------
-###### 如果您希望可以提升帳號的安全性，防止有人嘗試不合法地存取您的 PTT帳號，那麼 PTT One-Time Password 就是你的首選。
-###### 透過 One-Time Password 不斷更換的特性，確保帳號存取安全，有效降低帳號/密碼被盜用的風險。
+###### 如果您希望提升帳號的安全性，防止有人嘗試不合法地存取您的 PTT帳號，那麼 PTT One-Time Password 就是您的首選。
+###### 透過 One-Time Password 不斷更換密碼的特性，確保您帳號的存取安全，有效降低帳號/密碼被盜用的風險。
 
 如何使用
 -------------------
 ##### 安裝
-###### 1. [下載程式](https://github.com/Truth0906/PTTOTP/releases)
-###### 2. 下載 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
-###### 3. 執行 PTT One-Time Password 並輸入您的 PTT 帳號密碼
-###### 4. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode，以將 One-Time Password 金鑰匯進 Google Authenticator 中
-###### 5. 保持 PTT One-Time Password 的運作
+###### 1. 下載 PTT One-Time Password [下載](https://github.com/Truth0906/PTTOTP/releases) 與 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
+###### 2. 執行 PTT One-Time Password 並輸入您的 PTT 帳號密碼
+###### 3. 使用 Google Authenticator 掃描顯示在網頁上的 QRCode，以將 One-Time Password 金鑰匯進 Google Authenticator 中
+###### 4. 保持 PTT One-Time Password 的運作
 ##### 登入
 ###### 1. 打開 Google Authenticator
-###### 2. 使用 Google Authenticator 上所顯示的 One-Time Password 當作 PTT 帳號的密碼登入
+###### 2. 複製 Google Authenticator 上所顯示的 One-Time Password 當作 PTT 帳號的密碼登入
 ##### 解除
 ###### 1. 點選執行中的 PTT One-Time Password
 ###### 2. 按下 Ctrl + C 程式會自動將您的 PTT 帳號密碼恢復原樣
