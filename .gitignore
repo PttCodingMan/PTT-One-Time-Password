@@ -1,5 +1,9 @@
+PreOTPConfig.txt
 OTPConfig.txt
 QRCode.html
+PTTOTP.spec
 dist/
 PTTOTP.egg-info/
 __pycache__/
+build/
+PTTOTP_*/

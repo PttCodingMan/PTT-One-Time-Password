@@ -1,0 +1,10 @@
+PTT One-Time Password 使用者授權條款 v 1.0.0
+
+重要訊息—安裝 PTT One-Time Password 前，請詳細閱讀本最終用戶許可協議 （“EULA”）。安裝、複製和/或以其他方式使用 PTT One-Time Password，
+即表示您同意受本最終用戶許可協議條款之約束，僅可在本協議條款下使用 PTT One-Time Password。安裝前，請確保您的電腦達到 PTT One-Time Password 運行的最低技術規格要求。
+PTT One-Time Password 保留隨時新增、刪除和變更此使用者授權條款之權利。
+
+1. PTT One-Time Password 因任何錯誤、病毒造成使用者的任何損失，PTT One-Time Password 皆不負任何責任。
+
+請問您同意以上條款? (yes/no)
+: yes
