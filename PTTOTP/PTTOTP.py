@@ -119,7 +119,6 @@ def BackupCheck():
     if isWindows:
         OTPKeySystemBackupPath = os.getenv('APPDATA') + '/PTTOTP/'
     else:
-        print()
         OTPKeySystemBackupPath = os.environ['HOME'] + '/PTTOTP/'
 
     if not os.path.exists(OTPKeySystemBackupPath):
@@ -206,6 +205,8 @@ if int(RemoteVersionTemp) > int(CurrentVersionTemp):
 else:
     log('已是最新版本')
 
+
+
 if not readOTPConfig('OTPConfig.txt'):
     if os.path.isfile(OTPKeySystemBackupPath + 'OTPConfig.txt'):
         print('發現先前備份的 PTT One-Time Password 金鑰')
@@ -250,21 +251,29 @@ if not readOTPConfig('OTPConfig.txt'):
     with open('OTPConfig.txt', 'w') as OTPConfigFile:
         json.dump(OTPConfig, OTPConfigFile)
 
+isLogin = False
+
 OTP = pyotp.TOTP(OTPKey)
-PTTBot = PTT.Library(ID, Password)
-ErrCode = PTTBot.login()
+PTTBot = PTT.Library()
+ErrCode = PTTBot.login(ID, Password)
 if ErrCode != PTT.ErrorCode.Success:
-    ErrCode = PTTBot.login(ID, LastPassword)
-    if ErrCode != PTT.ErrorCode.Success:
-        ErrCode = PTTBot.login(ID, PrePassword)
+    if LastPassword != Password:
+        ErrCode = PTTBot.login(ID, LastPassword)
         if ErrCode != PTT.ErrorCode.Success:
-            PTTBot.Log('登入失敗')
-            sys.exit()
-        LastPassword = PrePassword
-    else:
-        pass
+            if PrePassword != '':    
+                ErrCode = PTTBot.login(ID, PrePassword)
+                if ErrCode != PTT.ErrorCode.Success:
+                    PTTBot.Log('登入失敗')
+                    sys.exit()
+                LastPassword = PrePassword
+        else:
+            pass
 else:
     LastPassword = Password
+
+if ErrCode != PTT.ErrorCode.Success:
+    PTTBot.Log('登入失敗')
+    sys.exit()
 
 isFirstRound = True
 
