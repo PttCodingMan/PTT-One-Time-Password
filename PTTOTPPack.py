@@ -18,10 +18,11 @@ if os.name == 'nt':
     OutputFileName = 'PTTOTP.exe'
     OutputFile = './dist/' + OutputFileName
     try:
-        os.remove(OutputFile)
+        shutil.rmtree('dist')
     except:
         pass
-    subprocess.run(['pyinstaller', '--onefile', '--icon=./PTTOTP/Res/PTTOTP.ico', './PTTOTP/PTTOTP.py'], stdout=subprocess.PIPE).stdout.decode('utf-8')
+    time.sleep(1)
+    subprocess.run(['pyinstaller', '--onefile', '--icon=./PTTOTP.ico', './PTTOTP/PTTOTP.py'], stdout=subprocess.PIPE).stdout.decode('utf-8')
 
     if not os.path.isfile(OutputFile):
         print('編譯執行檔失敗')
