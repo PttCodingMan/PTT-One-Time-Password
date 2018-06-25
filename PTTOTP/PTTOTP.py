@@ -22,7 +22,6 @@ def log(InputMessage):
 
 def getFileTime():
     return strftime("%m.%d_%H.%M.%S")
-
 QRCodeHTMLSample = '''
 <!DOCTYPE html>
 <head>
@@ -205,8 +204,6 @@ if int(RemoteVersionTemp) > int(CurrentVersionTemp):
 else:
     log('已是最新版本')
 
-
-
 if not readOTPConfig('OTPConfig.txt'):
     if os.path.isfile(OTPKeySystemBackupPath + 'OTPConfig.txt'):
         print('發現先前備份的 PTT One-Time Password 金鑰')
@@ -220,6 +217,7 @@ if not readOTPConfig('OTPConfig.txt'):
             GenOTPKey = True
     else:
         GenOTPKey = True
+
     if GenOTPKey:
         
         with open('eula.txt', encoding='utf-8') as EulaFile:
@@ -236,7 +234,7 @@ if not readOTPConfig('OTPConfig.txt'):
             
             C = input('請問您同意以上條款?(yes/no): ').lower()
             print('PTT One-Time Password 感謝您')
-            if C != 'yes':
+            if C != 'yes' and C != 'y':
                 sys.exit()
             EulaPart += '========================\n請問您同意以上條款? (yes/no)\n: yes'
             
@@ -302,7 +300,16 @@ try:
 
             LastPassword = CurrentOTP
 
-            if not isFirstRound:
+            if isFirstRound:
+                CurrentSec = int(strftime("%S"))
+                CurrentSec = 30 - (CurrentSec % 30) - 3
+
+                if CurrentSec > 0:
+                    try:
+                        time.sleep(CurrentSec)
+                    except:
+                        break;
+            else:
                 try:
                     time.sleep(27)
                 except:
