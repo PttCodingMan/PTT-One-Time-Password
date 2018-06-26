@@ -19,6 +19,7 @@ if os.name == 'nt':
     OutputFile = './dist/' + OutputFileName
     try:
         shutil.rmtree('dist')
+        shutil.rmtree('build')
     except:
         pass
     time.sleep(1)
@@ -35,11 +36,11 @@ if os.name == 'nt':
 
     try:
         shutil.rmtree(WindowsPackFolder)
+        time.sleep(1)
+        os.mkdir(WindowsPackFolder)
     except:
         pass
-    time.sleep(1)
-    os.mkdir(WindowsPackFolder)
-
+    
     PackFileList = [
         ('./dist/', 'PTTOTP.exe'), 
         ('./PTTOTP/', 'eula.txt'),

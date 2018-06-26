@@ -171,7 +171,7 @@ def readOTPConfig(FileName):
     
     return True
 
-print('歡迎使用 PTT OTP v ' + Version.Ver)
+print('歡迎使用 PTT One-Time Password v ' + Version.Ver)
 
 detectOS()
 BackupCheck()
@@ -290,16 +290,15 @@ try:
             with open(OTPKeySystemBackupPath + 'OTPConfig.txt', 'w') as OTPConfigFile:
                 json.dump(OTPConfig, OTPConfigFile)
             
-            log('準備更改密碼 ' + LastPassword + ' -> ' + CurrentOTP)
-
             ErrCode = PTTBot.changePassword(LastPassword, CurrentOTP)
             # ErrCode = PTTBot.changePassword(Password, Password)
             if ErrCode != PTT.ErrorCode.Success:
                 log('失敗')
                 break
-
+            
+            log('已經更改密碼 ' + LastPassword + ' -> ' + CurrentOTP + ' 如需停止程式，請輸入 Ctrl + C')
             LastPassword = CurrentOTP
-
+            
             if isFirstRound:
                 CurrentSec = int(strftime("%S"))
                 CurrentSec = 30 - (CurrentSec % 30) - 3
