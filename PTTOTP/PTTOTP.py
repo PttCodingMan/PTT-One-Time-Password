@@ -204,11 +204,12 @@ if int(RemoteVersionTemp) > int(CurrentVersionTemp):
 else:
     log('已是最新版本')
 
+GenOTPKey = False
+
 if not readOTPConfig('OTPConfig.txt'):
     if os.path.isfile(OTPKeySystemBackupPath + 'OTPConfig.txt'):
         print('發現先前備份的 PTT One-Time Password 金鑰')
         c = input('請問要復原資料嗎? [Y/n] ').lower()
-        GenOTPKey = False
         if c == 'y' or c == '':
             if not readOTPConfig(OTPKeySystemBackupPath + 'OTPConfig.txt'):
                 print('復原失敗')
@@ -246,9 +247,6 @@ if not readOTPConfig('OTPConfig.txt'):
         genOTPKey()
         setLastPassword()
 
-    with open('OTPConfig.txt', 'w') as OTPConfigFile:
-        json.dump(OTPConfig, OTPConfigFile)
-
 isLogin = False
 
 OTP = pyotp.TOTP(OTPKey)
@@ -273,6 +271,10 @@ if ErrCode != PTT.ErrorCode.Success:
     PTTBot.Log('登入失敗')
     sys.exit()
 
+if GenOTPKey:
+    with open('OTPConfig.txt', 'w') as OTPConfigFile:
+        json.dump(OTPConfig, OTPConfigFile)
+
 isFirstRound = True
 
 try:
@@ -284,7 +286,8 @@ try:
             OTPConfig['LastPassword'] = CurrentOTP
             OTPConfig['PrePassword'] = LastPassword
 
-            copyfile('OTPConfig.txt', OTPKeySystemBackupPath + 'PreOTPConfig.txt')
+            if os.path.isfile('OTPConfig.txt'):
+                copyfile('OTPConfig.txt', OTPKeySystemBackupPath + 'PreOTPConfig.txt')
             with open('OTPConfig.txt', 'w') as OTPConfigFile:
                 json.dump(OTPConfig, OTPConfigFile)
             with open(OTPKeySystemBackupPath + 'OTPConfig.txt', 'w') as OTPConfigFile:
@@ -293,10 +296,11 @@ try:
             ErrCode = PTTBot.changePassword(LastPassword, CurrentOTP)
             # ErrCode = PTTBot.changePassword(Password, Password)
             if ErrCode != PTT.ErrorCode.Success:
-                log('失敗')
+                log('嘗試將密碼由 ' + LastPassword + ' 更改為 ' + CurrentOTP + ' 失敗!')
+                log('程式緊急，請從 OTPConfig.txt 恢復您的密碼')
                 break
             
-            log('已經更改密碼 ' + LastPassword + ' -> ' + CurrentOTP + ' 如需停止程式，請輸入 Ctrl + C')
+            log('如需停止程式，請輸入 Ctrl + C')
             LastPassword = CurrentOTP
             
             if isFirstRound:

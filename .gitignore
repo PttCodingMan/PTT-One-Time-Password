@@ -6,6 +6,6 @@ dist/
 PTTOTP.egg-info/
 __pycache__/
 build/
-PTTOTP_*/
+PTT One-Time Password_*/
 *.zip
 *.tar.xz

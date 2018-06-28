@@ -32,11 +32,15 @@ if os.name == 'nt':
 
     print('目前版本: ' + VersionStr)
 
-    WindowsPackFolder = 'PTTOTP_Windows_' + VersionFileStr + '/'
+    WindowsPackFolder = 'PTT One-Time Password_Windows_' + VersionFileStr + '/'
 
     try:
         shutil.rmtree(WindowsPackFolder)
-        time.sleep(1)
+    except:
+        pass
+    
+    time.sleep(1)
+    try:
         os.mkdir(WindowsPackFolder)
     except:
         pass
@@ -50,8 +54,8 @@ if os.name == 'nt':
     for Path, File in PackFileList:
         if os.path.isfile(Path + File):
             copyfile(Path + File, WindowsPackFolder + File)
-    else:
-        shutil.copytree(Path + File, WindowsPackFolder + File)
+        else:
+            shutil.copytree(Path + File, WindowsPackFolder + File)
 
     print('Windows 版本 PTT One-Time Password 打包成功')
 else:
@@ -61,7 +65,7 @@ else:
         ('./PTTOTP/', 'Res'),
     ]
 
-    LinuxPackFolder = 'PTTOTP_Linux_' + VersionFileStr + '/'
+    LinuxPackFolder = 'PTT One-Time Password_Linux_' + VersionFileStr + '/'
 
     try:
         shutil.rmtree('dist')

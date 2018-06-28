@@ -1,7 +1,7 @@
 ![PTTOTP: A PTT One-Time Password Bot in Python](https://i.imgur.com/zFxDCU7.png)
 # PTT One-Time Password
 
-###### PTT One-Time Password 是一個由 Python 實現的 PTT 動態登入密碼，你可以在你的電腦上執行此程式，就可以享受 PTT One-Time Password 給予的安全性
+###### PTT One-Time Password 是一個由 Python 實現的 PTT 動態登入密碼，你可以在你的電腦上執行此程式，搭配手機上的 Google Authenticator，就可以享受 PTT One-Time Password 給予的安全性
 ###### 
 ###### 測試平台: Windows 10, Ubuntu 18.04
 ###### 原始碼
@@ -35,13 +35,13 @@
 How it works
 -------------------
 ###### 您需要一台連接網路的主機，作為 PTT One-Time Password 主機。
-###### PTT One-Time Password 在保護您的 PTT 帳號期間，會根據演算法產生的 One-Time Password 去定期地去修改 PTT 帳號密碼，以達到動態密碼的效果。
+###### PTT One-Time Password 在保護您的 PTT 帳號期間，會根據 [RFC6238](https://tools.ietf.org/html/rfc6238) 演算法產生的 One-Time Password 去定期地去修改 PTT 密碼，以達到動態密碼的效果。
 
 重要
 -------------------
-###### 初始化 PTT One-Time Password 後，會產生 OTPConfig.txt 檔案內含所有 PTT One-Time Password 相關重要資訊，會自動在程式資料夾還有系統使用者資料夾中備份，以保護您 One-Time Password 金鑰的安全。
+###### 初始化 PTT One-Time Password 後，會產生 OTPConfig.txt，檔案內含所有 PTT One-Time Password 相關重要資訊，會自動在程式資料夾還有系統使用者資料夾中備份，以保護您 One-Time Password 金鑰的安全。
 ###### 一旦遺失所有備份或者硬碟毀損，作者也無法將您的帳號密碼恢復，請洽 PTT 帳號部，協助恢復您的帳號密碼。
-###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重新重啟程式，PTT One-Time Password 會自動恢復您的 One-Time Password 功能。
+###### 如果您的 PTT One-Time Password，不幸因為各種原因當機或者關閉，您可以直接重啟程式，PTT One-Time Password 會自動恢復您的 One-Time Password 功能。
 ###### PTT One-Time Password，會顯示並儲存敏感資訊，請勿在公共電腦上執行 PTT One-Time Password。
 ###### 切勿同時執行兩個以上 PTT One-Time Password 程式。
 
@@ -51,7 +51,7 @@ How it works
 
 版本
 -------------------
-###### 0.1.2
+###### 0.1.3
 
 安裝
 -------------------
