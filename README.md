@@ -1,5 +1,6 @@
 ![PTTOTP: PTT One-Time Password in Python](https://i.imgur.com/zFxDCU7.png)
 # 批踢踢動態密碼
+## 此專案已經停止維護
 
 ###### 批踢踢動態密碼 (英語：PTT One-Time Password) 是一個專屬於批踢踢的動態密碼系統，您可以在您的電腦上執行此程式，並搭配手機的 Google Authenticator，批踢踢動態密碼就可以提供您的批踢踢帳號更好的安全性
 ###### 
