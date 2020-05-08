@@ -9,3 +9,4 @@ build/
 PTT One-Time Password_*/
 *.zip
 *.tar.xz
+/.idea
