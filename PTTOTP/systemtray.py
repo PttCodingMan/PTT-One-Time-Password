@@ -8,6 +8,7 @@ import config
 from log import Logger
 import login_window
 
+
 class Form(QSystemTrayIcon):
     def __init__(self, console):
         super(Form, self).__init__(None)
@@ -15,9 +16,10 @@ class Form(QSystemTrayIcon):
         self.logger = Logger('OTP', Logger.INFO)
 
         self.console = console
+        console.system_alert = self.system_alert
 
-        icon = util.load_icon(config.icon_small)
-        self.setIcon(icon)
+        self.icon = util.load_icon(config.icon_small)
+        self.setIcon(self.icon)
 
         menu = QMenu()
 
@@ -25,6 +27,7 @@ class Form(QSystemTrayIcon):
         exit_act.triggered.connect(self.exit_func)
 
         self.setContextMenu(menu)
+        self.setToolTip('Ptt OTP')
 
         self.show()
 
@@ -33,8 +36,13 @@ class Form(QSystemTrayIcon):
         self.login_form = login_window.Form(console)
         self.show_login_form()
 
+        self.system_alert('Ptt OTP 啟動')
+
     def show_login_form(self):
         self.login_form.show()
+
+    def system_alert(self, msg):
+        self.showMessage('Ptt OTP', msg, self.icon)
 
     def icon_clicked(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:

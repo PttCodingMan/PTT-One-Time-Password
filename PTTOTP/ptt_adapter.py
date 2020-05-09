@@ -4,20 +4,27 @@ import time
 from PyPtt import PTT
 import util
 
-
+from log import Logger
 class API:
-    def __init__(self):
+    def __init__(self, console):
+
+        self.console = console
+        self.logger = Logger('PTT', Logger.INFO)
 
         self.login_success = False
         self.call_logout = False
 
     def logout(self):
-        self.call_logout = True
 
-        while self.call_logout:
-            time.sleep(0.5)
+        self.logger.show(Logger.INFO, '開始登出')
 
-        print('登出完成')
+        if self.login_success:
+            self.call_logout = True
+
+            while self.call_logout:
+                time.sleep(0.5)
+
+        self.logger.show(Logger.INFO, '登出完成')
 
     def login(self, ptt_id, ptt_pw):
 
@@ -46,15 +53,17 @@ class API:
         except PTT.exceptions.LoginError:
             ptt_bot.log('登入失敗')
             util.alert('登入失敗')
-            sys.exit()
+            return
         except PTT.exceptions.WrongIDorPassword:
             ptt_bot.log('帳號密碼錯誤')
             util.alert('帳號密碼錯誤')
-            sys.exit()
+            return
         except PTT.exceptions.LoginTooOften:
             ptt_bot.log('請稍等一下再登入')
             util.alert('請稍等一下再登入')
-            sys.exit()
+            return
+
+        self.console.system_alert('登入成功')
 
         self.login_success = True
 

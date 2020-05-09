@@ -10,26 +10,26 @@ from PySide2.QtCore import QByteArray
 import util
 import config
 
-
+from log import Logger
 class Form(QDialog):
 
     def __init__(self, console, parent=None):
         super(Form, self).__init__(parent)
         self.console = console
+
+        self.logger = Logger('Login', Logger.INFO)
+
         self.setWindowTitle("PttOTP 登入視窗")
 
         self.setMinimumWidth(250)
-        qbyte = QByteArray(util.hex_byte(config.icon_small))
 
-        qicon = QPixmap()
-        qicon.loadFromData(qbyte, "png")
-
-        self.setWindowIcon(qicon)
+        self.setWindowIcon(util.load_icon(config.icon_small))
         # Create widgets
         self.label_id = QLabel('請輸入批踢踢帳號')
         self.edit_id = QLineEdit()
         self.label_pw = QLabel('請輸入批踢踢密碼')
         self.edit_pw = QLineEdit()
+        self.edit_pw.setEchoMode(QLineEdit.Password)
         self.button = QPushButton("登入")
         # Create layout and add widgets
         layout = QVBoxLayout()
@@ -41,15 +41,15 @@ class Form(QDialog):
         # Set dialog layout
         self.setLayout(layout)
         # Add button signal to greetings slot
-        self.button.clicked.connect(self.greetings)
+        self.button.clicked.connect(self.login)
 
         self.ptt_adapter = None
         self.next = False
 
     # Greets the user
-    def greetings(self):
-        print("Hello %s" % self.edit_id.text())
-        print("Hello %s" % self.edit_pw.text())
+    def login(self):
+
+        self.logger.show(Logger.INFO, '開始登入')
 
         ptt_id = self.edit_id.text()
         ptt_pw = self.edit_pw.text()
@@ -60,7 +60,7 @@ class Form(QDialog):
         while not self.ptt_adapter.login_success:
             time.sleep(0.5)
 
-        print('login success')
+        self.logger.show(Logger.INFO, '開始成功')
         self.next = True
 
         self.close()
