@@ -6,7 +6,20 @@ import util
 
 
 class API:
-    def __init__(self, ptt_id, ptt_pw):
+    def __init__(self):
+
+        self.login_success = False
+        self.call_logout = False
+
+    def logout(self):
+        self.call_logout = True
+
+        while self.call_logout:
+            time.sleep(0.5)
+
+        print('登出完成')
+
+    def login(self, ptt_id, ptt_pw):
 
         self.ptt_id = ptt_id
         self.ptt_pw = ptt_pw
@@ -19,10 +32,7 @@ class API:
             daemon=True
         )
         self.thread.start()
-        time.sleep(0.5)
-
-    def logout(self):
-        self.call_logout = True
+        time.sleep(0.1)
 
     def run(self):
         ptt_bot = PTT.API()
@@ -52,4 +62,6 @@ class API:
             time.sleep(0.1)
 
         ptt_bot.logout()
+
         self.login_success = False
+        self.call_logout = False
