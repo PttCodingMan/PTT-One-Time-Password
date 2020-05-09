@@ -21,12 +21,8 @@ class Form(QSystemTrayIcon):
         self.icon = util.load_icon(config.icon_small)
         self.setIcon(self.icon)
 
-        menu = QMenu()
+        self.set_menu(False)
 
-        exit_act = menu.addAction("離開")
-        exit_act.triggered.connect(self.exit_func)
-
-        self.setContextMenu(menu)
         self.setToolTip('Ptt OTP')
 
         self.show()
@@ -38,8 +34,36 @@ class Form(QSystemTrayIcon):
 
         self.system_alert('Ptt OTP 啟動')
 
+    def set_menu(self, is_login):
+
+        menu = QMenu()
+
+        if is_login:
+            act = menu.addAction("登出")
+            act.triggered.connect(self.logout)
+        else:
+            act = menu.addAction("登入")
+            act.triggered.connect(self.show_login_form)
+
+        menu.addSeparator()
+        act = menu.addAction("離開")
+        act.triggered.connect(self.exit_func)
+
+        self.setContextMenu(menu)
+
+    def logout(self):
+        self.set_menu(False)
+        self.console.ptt_adapter.logout()
+
     def show_login_form(self):
         self.login_form.show()
+        self.login_form.exec_()
+
+        if not self.login_form.next:
+            self.set_menu(False)
+            return
+
+        self.set_menu(True)
 
     def system_alert(self, msg):
         self.showMessage('Ptt OTP', msg, self.icon)
@@ -53,5 +77,5 @@ class Form(QSystemTrayIcon):
 
     def exit_func(self):
         self.logger.show(Logger.DEBUG, '離開')
-        self.console.ptt_adapter.logout()
+        self.logout()
         sys.exit()

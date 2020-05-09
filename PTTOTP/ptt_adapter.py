@@ -5,14 +5,21 @@ from PyPtt import PTT
 import util
 
 from log import Logger
+
+
 class API:
     def __init__(self, console):
 
         self.console = console
         self.logger = Logger('PTT', Logger.INFO)
 
+        self.reset()
+
+    def reset(self):
+
         self.login_success = False
         self.call_logout = False
+        self.login_finish = True
 
     def logout(self):
 
@@ -44,6 +51,7 @@ class API:
     def run(self):
         ptt_bot = PTT.API()
 
+        self.login_finish = False
         try:
             ptt_bot.login(
                 self.ptt_id,
@@ -52,17 +60,21 @@ class API:
             )
         except PTT.exceptions.LoginError:
             ptt_bot.log('登入失敗')
-            util.alert('登入失敗')
+            self.console.system_alert('登入失敗')
+            self.login_finish = True
             return
         except PTT.exceptions.WrongIDorPassword:
             ptt_bot.log('帳號密碼錯誤')
-            util.alert('帳號密碼錯誤')
+            self.console.system_alert('帳號密碼錯誤')
+            self.login_finish = True
             return
         except PTT.exceptions.LoginTooOften:
             ptt_bot.log('請稍等一下再登入')
-            util.alert('請稍等一下再登入')
+            self.console.system_alert('請稍等一下再登入')
+            self.login_finish = True
             return
 
+        self.login_finish = True
         self.console.system_alert('登入成功')
 
         self.login_success = True
@@ -72,5 +84,4 @@ class API:
 
         ptt_bot.logout()
 
-        self.login_success = False
-        self.call_logout = False
+        self.reset()

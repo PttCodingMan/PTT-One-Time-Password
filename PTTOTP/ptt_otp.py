@@ -20,15 +20,6 @@ if __name__ == '__main__':
     console = console.Console()
     console.ptt_adapter = ptt_adapter.API(console)
 
-    # login_window = login_window.Form(console)
-    # login_window.show()
-    # login_window.exec_()
-    #
-    # if login_window.next:
-    #     print('next')
-    # else:
-    #     print('close sys')
-
     system_tray = systemtray.Form(console)
     app.exec_()
     sys.exit()
