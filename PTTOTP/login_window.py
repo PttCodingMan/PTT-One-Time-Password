@@ -33,6 +33,7 @@ class Form(QDialog):
         self.edit_pw = QLineEdit()
         self.edit_pw.setEchoMode(QLineEdit.Password)
         self.button = QPushButton("登入")
+        self.button.clicked.connect(self.login)
         # Create layout and add widgets
         layout = QVBoxLayout()
         layout.addWidget(self.label_id)
@@ -43,7 +44,6 @@ class Form(QDialog):
         # Set dialog layout
         self.setLayout(layout)
         # Add button signal to greetings slot
-        self.button.clicked.connect(self.login)
 
         self.ptt_adapter = None
         self.next = False
@@ -55,6 +55,7 @@ class Form(QDialog):
 
         ptt_id = self.edit_id.text()
         ptt_pw = self.edit_pw.text()
+        self.ptt_id = ptt_id
 
         self.ptt_adapter = self.console.ptt_adapter
 

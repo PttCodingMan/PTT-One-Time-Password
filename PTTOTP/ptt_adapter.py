@@ -75,7 +75,7 @@ class API:
             return
 
         self.login_finish = True
-        self.console.system_alert('登入成功')
+        self.console.ptt_id = self.ptt_id
 
         self.login_success = True
 

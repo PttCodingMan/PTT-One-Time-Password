@@ -5,6 +5,7 @@ import ptt_adapter
 from log import Logger
 import console
 import systemtray
+import config
 
 version = '0.1.0'
 
@@ -18,6 +19,7 @@ if __name__ == '__main__':
     app.setQuitOnLastWindowClosed(False)
 
     console = console.Console()
+    console.config = config.Config(console)
     console.ptt_adapter = ptt_adapter.API(console)
 
     system_tray = systemtray.Form(console)

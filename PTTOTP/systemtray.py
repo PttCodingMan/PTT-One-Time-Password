@@ -1,12 +1,14 @@
 import sys
-
+import os
+import time
+import pyotp
 from PySide2.QtWidgets import QSystemTrayIcon
 from PySide2.QtWidgets import QMenu
 import util
 import config
-
 from log import Logger
 import login_window
+import rule_window
 
 
 class Form(QSystemTrayIcon):
@@ -31,8 +33,6 @@ class Form(QSystemTrayIcon):
 
         self.login_form = login_window.Form(console)
         self.show_login_form()
-
-        self.system_alert('Ptt OTP 啟動')
 
     def set_menu(self, is_login):
 
@@ -64,6 +64,31 @@ class Form(QSystemTrayIcon):
             return
 
         self.set_menu(True)
+
+        if not os.path.isdir('./data'):
+            os.makedirs('./data')
+
+        current_path = f'./data/{self.login_form.ptt_id}'
+        if not os.path.isdir(current_path):
+
+            self.system_alert(f'{self.login_form.ptt_id} 歡迎使用 Ptt OTP')
+            rule_form = rule_window.Form(self.console)
+            rule_form.show()
+            rule_form.exec_()
+
+            if not rule_form.ok:
+                self.system_alert('Ptt OTP 感謝您的試用')
+                time.sleep(5)
+                self.exit_func()
+
+            os.makedirs(current_path)
+            otp_key = pyotp.random_base32()
+            self.console.config.set(config.key_otp_key, otp_key)
+        else:
+            self.system_alert(f'{self.login_form.ptt_id} 歡迎回來')
+
+        print(self.login_form.ptt_id)
+
 
     def system_alert(self, msg):
         self.showMessage('Ptt OTP', msg, self.icon)
