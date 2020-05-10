@@ -12,6 +12,14 @@ class Config:
         self.console = console
         self.data = dict()
 
+    def load(self):
+        current_path = f'./data/{self.console.ptt_id}/config.txt'
+        try:
+            with open(current_path, encoding='utf8') as f:
+                self.data = json.load(f)
+        except FileNotFoundError:
+            self.data = dict()
+
     def set(self, key, data):
         self.data[key] = data
         self.write()

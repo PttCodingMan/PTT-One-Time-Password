@@ -4,8 +4,8 @@ import time
 from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QApplication,
                                QVBoxLayout, QDialog)
 
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtCore import QByteArray
+# from PySide2.QtGui import QIcon, QPixmap
+# from PySide2.QtCore import QByteArray
 
 import util
 import config
@@ -51,11 +51,13 @@ class Form(QDialog):
     # Greets the user
     def login(self):
 
-        self.logger.show(Logger.INFO, '開始登入')
-
         ptt_id = self.edit_id.text()
         ptt_pw = self.edit_pw.text()
-        self.ptt_id = ptt_id
+
+        if len(ptt_id) <= 2 or len(ptt_pw) <= 3:
+            return
+
+        self.logger.show(Logger.INFO, '開始登入')
 
         self.ptt_adapter = self.console.ptt_adapter
 
@@ -70,6 +72,7 @@ class Form(QDialog):
 
         self.logger.show(Logger.INFO, '登入成功')
         self.next = True
+        self.console.ptt_id = ptt_id
 
         self.close()
 

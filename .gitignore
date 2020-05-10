@@ -10,3 +10,4 @@ PTT One-Time Password_*/
 *.zip
 *.tar.xz
 /.idea
+config.txt
