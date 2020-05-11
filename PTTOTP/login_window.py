@@ -76,9 +76,7 @@ class Form(QDialog):
 
         self.close()
 
-    # def closeEvent(self, event):
-    #     print('close')
-    #     if self.ptt_adapter is not None:
-    #         self.ptt_adapter.logout()
-    #
-    #     event.accept()
+    def closeEvent(self, event):
+        if not self.next:
+            self.logger.show(Logger.INFO, '直接關閉')
+            self.console.system_alert('背景執行中')

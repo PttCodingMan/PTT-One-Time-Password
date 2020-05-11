@@ -4,7 +4,6 @@ import pyotp
 from PySide2.QtWidgets import (QLabel, QHBoxLayout, QPushButton, QApplication,
                                QVBoxLayout, QDialog, QLineEdit)
 from PySide2.QtGui import QPixmap
-from PySide2.QtCore import Qt
 import util
 import config
 from log import Logger

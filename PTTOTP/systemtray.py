@@ -11,6 +11,7 @@ from log import Logger
 import login_window
 import rule_window
 import show_verify
+import about_window
 
 
 class Form(QSystemTrayIcon):
@@ -50,11 +51,18 @@ class Form(QSystemTrayIcon):
             act = menu.addAction("登入")
             act.triggered.connect(self.show_login_form)
 
+        act = menu.addAction("關於")
+        act.triggered.connect(self.aoubt_func)
         menu.addSeparator()
         act = menu.addAction("離開")
         act.triggered.connect(self.exit_func)
 
         self.setContextMenu(menu)
+
+    def aoubt_func(self):
+        self.logger.show(Logger.INFO, '啟動關於視窗')
+        about_window_form = about_window.Form(self.console)
+        about_window_form.exec_()
 
     def logout(self):
         self.login_success = False

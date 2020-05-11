@@ -7,13 +7,11 @@ import console
 import systemtray
 import config
 
-version = '0.1.0'
-
 if __name__ == '__main__':
 
     logger = Logger('OTP', Logger.INFO)
 
-    logger.show_value(Logger.INFO, '版本', version)
+    logger.show_value(Logger.INFO, '版本', config.version)
 
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
