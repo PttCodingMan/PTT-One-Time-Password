@@ -46,6 +46,8 @@ class Form(QDialog):
         #     # label.setText("<a href=\"http://www.qtcentre.org\">QtCentre</a>");
         #     layout.addWidget(label)
 
+        MinimumHeight = 20
+
         label = QLabel()
         layout.addWidget(label)
 
@@ -53,20 +55,21 @@ class Form(QDialog):
         label.setOpenExternalLinks(True)
         label.setText(
             f'Ptt One Time Password v {config.version}')
-        label.setMinimumHeight(20)
+        label.setMinimumHeight(MinimumHeight)
+        layout.addWidget(label)
+
+        label = QLabel()
+        label.setOpenExternalLinks(True)
+        label.setText(
+            '專案網址: <a href=\"https://github.com/PttCodingMan/PTT-One-Time-Password\">https://github.com/PttCodingMan/PTT-One-Time-Password</a>')
+        label.setMinimumHeight(MinimumHeight)
         layout.addWidget(label)
 
         label = QLabel()
         label.setOpenExternalLinks(True)
         label.setText(
             '開發者: <a href=\"https://pttcodingman.github.io/\">CodingMan</a>')
-        label.setMinimumHeight(20)
-        layout.addWidget(label)
-
-        label = QLabel()
-        label.setOpenExternalLinks(True)
-        label.setText('專案網址: <a href=\"https://github.com/PttCodingMan/PTT-One-Time-Password\">https://github.com/PttCodingMan/PTT-One-Time-Password</a>')
-        label.setMinimumHeight(20)
+        label.setMinimumHeight(MinimumHeight)
         layout.addWidget(label)
 
         self.setLayout(layout)

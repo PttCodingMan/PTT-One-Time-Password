@@ -35,6 +35,7 @@ class Form(QSystemTrayIcon):
         self.activated.connect(self.icon_clicked)
 
         self.login_success = False
+        self.in_process = False
 
         self.show_login_form()
 
@@ -45,36 +46,59 @@ class Form(QSystemTrayIcon):
         if is_login:
             self.logger.show_value(Logger.INFO, '設定選單', '登出')
             act = menu.addAction("登出")
-            act.triggered.connect(self.logout)
+            act.triggered.connect(self.logout_func)
         else:
             self.logger.show_value(Logger.INFO, '設定選單', '登入')
             act = menu.addAction("登入")
             act.triggered.connect(self.show_login_form)
 
         act = menu.addAction("關於")
-        act.triggered.connect(self.aoubt_func)
+        act.triggered.connect(self.about_func)
         menu.addSeparator()
         act = menu.addAction("離開")
         act.triggered.connect(self.exit_func)
 
         self.setContextMenu(menu)
 
-    def aoubt_func(self):
+    def about_func(self):
+        if self.in_process:
+            return
+        self.in_process = True
+
         self.logger.show(Logger.INFO, '啟動關於視窗')
         about_window_form = about_window.Form(self.console)
         about_window_form.exec_()
 
-    def logout(self):
+        self.in_process = False
+
+    def logout_func(self):
+        if self.in_process:
+            return
+        self.in_process = True
+
         self.login_success = False
         self.set_menu(False)
         self.console.ptt_adapter.logout()
 
+        self.in_process = False
+
+    def exit_func(self):
+
+        self.logger.show(Logger.DEBUG, '離開')
+        self.logout_func()
+        sys.exit()
+
     def show_login_form(self):
+        if self.in_process:
+            return
+        self.in_process = True
+
         login_form = login_window.Form(self.console)
         login_form.show()
         login_form.exec_()
 
         if not login_form.next:
+            self.in_process = False
             return
 
         self.login_success = True
@@ -127,6 +151,8 @@ class Form(QSystemTrayIcon):
         # print(otp_key)
         # print(self.console.ptt_id)
 
+        self.in_process = False
+
     def system_alert(self, msg):
         self.showMessage('Ptt OTP', msg, self.icon)
 
@@ -136,7 +162,3 @@ class Form(QSystemTrayIcon):
             if not self.login_success:
                 self.show_login_form()
 
-    def exit_func(self):
-        self.logger.show(Logger.DEBUG, '離開')
-        self.logout()
-        sys.exit()
