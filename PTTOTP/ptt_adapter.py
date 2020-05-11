@@ -1,11 +1,10 @@
-import sys
 import threading
 import time
+import pyotp
 from PyPtt import PTT
-import util
 
 from log import Logger
-
+import config
 
 class API:
     def __init__(self, console):
@@ -20,6 +19,7 @@ class API:
         self.login_success = False
         self.call_logout = False
         self.login_finish = True
+        self.otp = None
 
     def logout(self):
 
@@ -47,6 +47,10 @@ class API:
         )
         self.thread.start()
         time.sleep(0.1)
+
+    def enable_otp(self):
+
+        self.otp = pyotp.TOTP(self.otp_key)
 
     def run(self):
         ptt_bot = PTT.API()
@@ -79,9 +83,23 @@ class API:
 
         self.login_success = True
 
+        last_otp = ''
         while not self.call_logout:
             time.sleep(0.1)
+            if self.otp is not None:
+                current_otp = self.otp.now()
 
+                if last_otp != current_otp:
+                    self.logger.show_value(Logger.INFO, '新密碼', current_otp)
+
+                    self.console.config.set(config.key_current_otp, current_otp)
+                    self.console.config.set(config.key_last_otp, last_otp)
+                    self.console.config.write()
+
+                    ptt_bot.change_pw(current_otp)
+                    self.logger.show(Logger.INFO, '密碼變更完成')
+
+        ptt_bot.change_pw(self.ptt_pw)
         ptt_bot.logout()
 
         self.reset()
