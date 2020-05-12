@@ -12,6 +12,7 @@ import login_window
 import rule_window
 import show_verify
 import about_window
+import otp_progressbar
 
 
 class Form(QSystemTrayIcon):
@@ -45,6 +46,9 @@ class Form(QSystemTrayIcon):
 
         if is_login:
             self.logger.show_value(Logger.INFO, '設定選單', '登出')
+
+            act = menu.addAction("顯示驗證碼")
+            act.triggered.connect(self.otp_progressbar_func)
             act = menu.addAction("登出")
             act.triggered.connect(self.logout_func)
         else:
@@ -60,16 +64,16 @@ class Form(QSystemTrayIcon):
 
         self.setContextMenu(menu)
 
+    def otp_progressbar_func(self):
+        self.logger.show(Logger.INFO, '啟動驗證碼視窗')
+        self.console.otp_form = otp_progressbar.Form(self.console)
+        self.console.otp_form.exec_()
+
     def about_func(self):
-        if self.in_process:
-            return
-        self.in_process = True
 
         self.logger.show(Logger.INFO, '啟動關於視窗')
         about_window_form = about_window.Form(self.console)
         about_window_form.exec_()
-
-        self.in_process = False
 
     def logout_func(self):
         if self.in_process:
@@ -147,7 +151,9 @@ class Form(QSystemTrayIcon):
         else:
             self.system_alert(f'{self.console.ptt_id} 歡迎回來')
 
-        otp_key = self.console.config.get(config.key_otp_key)
+        self.console.ptt_adapter.enable_otp()
+
+        # otp_key = self.console.config.get(config.key_otp_key)
         # print(otp_key)
         # print(self.console.ptt_id)
 

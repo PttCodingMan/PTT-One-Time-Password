@@ -7,6 +7,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import Qt
 
 from PySide2.QtGui import QColor, QFont
+from PySide2.QtWidgets import QDialog
 
 from log import Logger
 import util
@@ -303,8 +304,8 @@ class QRoundProgressBar(QtWidgets.QWidget):
             self.setPalette(p)
 
 
-class Form(QtWidgets.QWidget):
-    def __init__(self):
+class Form(QDialog):
+    def __init__(self, console):
         super(type(self), self).__init__()
 
         self.bar = QRoundProgressBar()
@@ -326,12 +327,17 @@ class Form(QtWidgets.QWidget):
         lay.addWidget(self.bar)
         self.setLayout(lay)
 
+        self.console = console
         self.timer_thread = None
         self.call_close = False
         self.logger = Logger('Progress', Logger.INFO)
         self.setWindowIcon(util.load_icon(config.icon_small))
 
-    def update_otp(self, data):
+        self.update_otp()
+
+    def update_otp(self):
+
+        data = self.console.current_otp
         self.logger.show_value(Logger.INFO, 'update_otp', data)
 
         width = ' ' * 1

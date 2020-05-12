@@ -6,6 +6,7 @@ from PyPtt import PTT
 from log import Logger
 import config
 
+
 class API:
     def __init__(self, console):
 
@@ -50,7 +51,8 @@ class API:
 
     def enable_otp(self):
 
-        self.otp = pyotp.TOTP(self.otp_key)
+        otp_key = self.console.config.get(config.key_otp_key)
+        self.otp = pyotp.TOTP(otp_key)
 
     def run(self):
         ptt_bot = PTT.API()
@@ -96,10 +98,18 @@ class API:
                     self.console.config.set(config.key_last_otp, last_otp)
                     self.console.config.write()
 
-                    ptt_bot.change_pw(current_otp)
+                    if self.console.test_mode:
+                        ptt_bot.change_pw(self.ptt_pw)
+                    else:
+                        ptt_bot.change_pw(current_otp)
+                    self.console.current_otp = current_otp
+                    if self.console.otp_form is not None:
+                        self.console.otp_form.update_otp()
+                    last_otp = current_otp
                     self.logger.show(Logger.INFO, '密碼變更完成')
 
-        ptt_bot.change_pw(self.ptt_pw)
+        if self.otp is not None:
+            ptt_bot.change_pw(self.ptt_pw)
         ptt_bot.logout()
 
         self.reset()

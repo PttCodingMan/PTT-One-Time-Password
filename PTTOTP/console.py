@@ -4,4 +4,8 @@ class Console:
     ptt_adapter = None
     log_handler = None
     system_alert = None
+    otp_form = None
+    current_otp = None
+
+    test_mode = True
 
