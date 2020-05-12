@@ -1,13 +1,16 @@
-# original source : https://stackoverflow.com/questions/33577068/any-pyqt-circular-progress-bar 
-# but it was pyqt4
-# I modified it for PyQt5
+from time import strftime
+import time
+import threading
+import sys
+
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import Qt
 
 from PySide2.QtGui import QColor, QFont
 
-import sys
-
+from log import Logger
+import util
+import config
 
 class QRoundProgressBar(QtWidgets.QWidget):
     StyleDonut = 1
@@ -202,7 +205,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
         dataPath.lineTo(baseRect.center())
 
         p.setBrush(self.palette().highlight())
-        p.setBrush(QColor(255,255,255, 255 * 0.3))
+        p.setBrush(QColor(255, 255, 255, 255 * 0.3))
 
         # pen = QtGui.QPen(self.palette().shadow().color(), self.dataPenWidth)
         pen = QtGui.QPen(self.palette().shadow().color(), -1)
@@ -300,7 +303,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
             self.setPalette(p)
 
 
-class TstWidget(QtWidgets.QWidget):
+class Form(QtWidgets.QWidget):
     def __init__(self):
         super(type(self), self).__init__()
 
@@ -311,48 +314,75 @@ class TstWidget(QtWidgets.QWidget):
         self.bar.setOutlinePenWidth(0)
         self.bar.setDonutThicknessRatio(0.92)
         self.bar.setDecimals(0)
-        # self.bar.setFormat('%v | %p %')
-        # self.bar.setFormat('')
-        # self.bar.resetFormat()
         self.bar.setNullPosition(90)
-
-        # StyleDonut = 1
-        # StylePie = 2
-        # StyleLine = 3
         self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
         self.bar.setDataColors([(0., QtGui.QColor.fromRgb(65, 105, 225))])
 
-        self.bar.setRange(0, 30)
+        self.bar.setRange(0, 29)
+
+        self.setWindowTitle('Ptt OTP 驗證碼')
 
         lay = QtWidgets.QVBoxLayout()
         lay.addWidget(self.bar)
         self.setLayout(lay)
 
-    def update(self, value, data):
+        self.timer_thread = None
+        self.call_close = False
+        self.logger = Logger('Progress', Logger.INFO)
+        self.setWindowIcon(util.load_icon(config.icon_small))
+
+    def update_otp(self, data):
+        self.logger.show_value(Logger.INFO, 'update_otp', data)
 
         width = ' ' * 1
-
-        self.bar.setValue(value)
 
         current_data = f'{width}{data}{width}'
         self.bar.setFormat(current_data)
 
+        if self.timer_thread is None:
+            self.timer_thread = threading.Thread(target=self.timer)
+            self.timer_thread.daemon = True
+            self.timer_thread.start()
+
+    def timer(self):
+
+        self.logger.show(Logger.INFO, '啟動計時器')
+
+        while not self.call_close:
+            current_sec = int(strftime("%S")) % 30
+
+            self.logger.show_value(Logger.INFO, 'current_sec', current_sec)
+
+            for value in range(current_sec, 30):
+                self.bar.setValue(value)
+
+                self.logger.show_value(Logger.TRACE, 'value', value)
+
+                temp_sec = value
+                if self.call_close:
+                    break
+                while temp_sec == value:
+                    time.sleep(0.05)
+                    temp_sec = int(strftime("%S")) % 30
+                    # self.logger.show_value(Logger.INFO, 'temp_sec', temp_sec)
+
 
 def update_thread():
-    import time
-    for _ in range(2):
-        for i in range(1, 31):
-            dlg.update(i, '12345' + str(i))
-            time.sleep(1)
+    for i in range(10):
+        print('===================================')
+        dlg.update_otp('12345' + str(i))
+        sleep_time = 30 - (int(strftime("%S")) % 30)
+        print(f'sleep {sleep_time}')
+        time.sleep(sleep_time)
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    dlg = TstWidget()
+    dlg = Form()
     dlg.show()
 
-    import threading
     thread = threading.Thread(target=update_thread)
+    thread.daemon = True
     thread.start()
 
     sys.exit(app.exec_())
