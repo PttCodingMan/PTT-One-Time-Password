@@ -4,7 +4,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from PySide2.QtCore import Qt
 
-from PySide2.QtGui import QFont
+from PySide2.QtGui import QColor, QFont
 
 import sys
 
@@ -163,8 +163,9 @@ class QRoundProgressBar(QtWidgets.QWidget):
             # p.setPen(QtGui.QPen(self.palette().shadow().color(), self.outlinePenWidth))
             p.setPen(QtGui.QPen(self.palette().shadow().color(), -1))
             # p.setBrush(self.palette().base())
-            p.setBrush(Qt.darkBlue)
+            p.setBrush(QColor(7, 93, 145))
             p.drawEllipse(baseRect)
+
         elif bs == self.StylePie:
             p.setPen(QtGui.QPen(self.palette().base().color(), self.outlinePenWidth))
             p.setBrush(self.palette().base())
@@ -201,6 +202,8 @@ class QRoundProgressBar(QtWidgets.QWidget):
         dataPath.lineTo(baseRect.center())
 
         p.setBrush(self.palette().highlight())
+        p.setBrush(QColor(255,255,255, 255 * 0.3))
+
         # pen = QtGui.QPen(self.palette().shadow().color(), self.dataPenWidth)
         pen = QtGui.QPen(self.palette().shadow().color(), -1)
         p.setPen(pen)
@@ -235,7 +238,9 @@ class QRoundProgressBar(QtWidgets.QWidget):
         text = self.valueToText(value)
 
         # !!! to revise
-        f = self.font()
+        # f = self.font()
+        f = QFont()
+        f.setFamily("微軟正黑體")
         # f.setPixelSize(innerRadius * max(0.05, (0.35 - self.decimals * 0.08)))
         f.setPixelSize(innerRadius * 1.8 / len(text))
         p.setFont(f)
@@ -315,8 +320,7 @@ class TstWidget(QtWidgets.QWidget):
         # StylePie = 2
         # StyleLine = 3
         self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
-        self.bar.setDataColors([(0., QtGui.QColor.fromRgb(65, 105, 225)), (0.5, QtGui.QColor.fromRgb(65, 105, 225)),
-                                (1., QtGui.QColor.fromRgb(65, 105, 225))])
+        self.bar.setDataColors([(0., QtGui.QColor.fromRgb(65, 105, 225))])
 
         self.bar.setRange(0, 30)
 
@@ -325,8 +329,13 @@ class TstWidget(QtWidgets.QWidget):
         self.setLayout(lay)
 
     def update(self, value, data):
+
+        width = ' ' * 1
+
         self.bar.setValue(value)
-        self.bar.setFormat(data)
+
+        current_data = f'{width}{data}{width}'
+        self.bar.setFormat(current_data)
 
 
 def update_thread():
