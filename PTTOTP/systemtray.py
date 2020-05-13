@@ -120,8 +120,6 @@ class Form(QSystemTrayIcon):
 
         self.login_success = True
 
-        self.set_menu(True)
-
         if not os.path.exists('./data'):
             os.makedirs('./data')
 
@@ -164,6 +162,7 @@ class Form(QSystemTrayIcon):
         else:
             self.system_alert(f'{self.console.ptt_id} 歡迎回來')
 
+        self.set_menu(True)
         self.console.ptt_adapter.enable_otp()
 
         self.console.otp_form = otp_progressbar.Form(self.console)

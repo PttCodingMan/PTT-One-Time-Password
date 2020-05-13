@@ -4,6 +4,7 @@ import pyotp
 from PySide2.QtWidgets import (QLabel, QHBoxLayout, QPushButton, QApplication,
                                QVBoxLayout, QDialog, QLineEdit)
 from PySide2.QtGui import QPixmap
+from PySide2.QtCore import Qt
 import util
 import config
 from log import Logger
@@ -19,6 +20,7 @@ class Form(QDialog):
 
         self.setWindowTitle("PttOTP 驗證視窗")
         self.setWindowIcon(util.load_icon(config.icon_small))
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
         rule_text = '''
 1. 請開啟 google authenticator 掃描以下圖片

@@ -25,14 +25,17 @@ class Form(QDialog):
 
         self.setWindowTitle("PttOTP 登入視窗")
 
-        self.setMinimumWidth(250)
+        self.setMinimumWidth(300)
+        self.setMinimumHeight(150)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setWindowIcon(util.load_icon(config.icon_small))
         # Create widgets
         self.label_id = QLabel('請輸入批踢踢帳號')
         self.edit_id = QLineEdit()
+        self.edit_id.setAlignment(Qt.AlignHCenter)
         self.label_pw = QLabel('請輸入批踢踢密碼')
         self.edit_pw = QLineEdit()
+        self.edit_pw.setAlignment(Qt.AlignHCenter)
         self.edit_pw.setEchoMode(QLineEdit.Password)
         self.button = QPushButton("登入")
         self.button.clicked.connect(self.login)

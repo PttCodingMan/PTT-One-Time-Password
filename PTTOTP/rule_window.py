@@ -12,7 +12,10 @@ class Form(QDialog):
 
     def __init__(self, console, parent=None):
         super(Form, self).__init__(parent)
-        self.setWindowFlag(Qt.WindowCloseButtonHint, False)
+        flag = self.windowFlags()
+        flag &= ~Qt.WindowCloseButtonHint
+        flag |= Qt.WindowStaysOnTopHint
+        self.setWindowFlags(flag)
         self.console = console
 
         self.logger = Logger('Rule', Logger.INFO)

@@ -250,7 +250,7 @@ class QRoundProgressBar(QWidget):
         f = QFont()
         f.setFamily("微軟正黑體")
         # f.setPixelSize(innerRadius * max(0.05, (0.35 - self.decimals * 0.08)))
-        f.setPixelSize(innerRadius * 1.8 / len(text))
+        f.setPixelSize(60)
         p.setFont(f)
 
         textRect = innerRect
@@ -330,7 +330,7 @@ class Form(QDialog):
 
         self.bar.setRange(0, 29)
 
-        self.setWindowTitle('Ptt OTP 驗證碼')
+        self.setWindowTitle(f'{console.ptt_id} 驗證碼')
 
         lay = QVBoxLayout()
         lay.addWidget(self.bar)
@@ -349,9 +349,7 @@ class Form(QDialog):
         data = self.console.current_otp
         self.logger.show_value(Logger.INFO, 'update_otp', data)
 
-        width = ' ' * 1
-
-        current_data = f'{width}{data}{width}'
+        current_data = f'{data}'
         self.bar.setFormat(current_data)
 
         if self.timer_thread is None:
@@ -380,6 +378,11 @@ class Form(QDialog):
                     time.sleep(0.05)
                     temp_sec = int(strftime("%S")) % 30
                     # self.logger.show_value(Logger.INFO, 'temp_sec', temp_sec)
+
+    def close_form(self):
+        self.call_close = True
+        time.sleep(0.5)
+        self.hide()
 
     def closeEvent(self, event):
         self.logger.show(Logger.INFO, '直接關閉')

@@ -21,6 +21,8 @@ class API:
         self.call_logout = False
         self.login_finish = True
         self.otp = None
+        self.catch_error = False
+        self.first = True
 
     def logout(self):
 
@@ -55,61 +57,91 @@ class API:
         self.otp = pyotp.TOTP(otp_key)
 
     def run(self):
+
         ptt_bot = PTT.API()
 
-        self.login_finish = False
-        try:
-            ptt_bot.login(
-                self.ptt_id,
-                self.ptt_pw,
-                kick_other_login=True
-            )
-        except PTT.exceptions.LoginError:
-            ptt_bot.log('登入失敗')
-            self.console.system_alert('登入失敗')
-            self.login_finish = True
-            return
-        except PTT.exceptions.WrongIDorPassword:
-            ptt_bot.log('帳號密碼錯誤')
-            self.console.system_alert('帳號密碼錯誤')
-            self.login_finish = True
-            return
-        except PTT.exceptions.LoginTooOften:
-            ptt_bot.log('請稍等一下再登入')
-            self.console.system_alert('請稍等一下再登入')
-            self.login_finish = True
-            return
+        while True:
 
-        self.login_finish = True
-        self.console.ptt_id = self.ptt_id
+            if self.catch_error:
+                self.catch_error = False
+                current_pw = current_otp
+            else:
+                current_pw = self.ptt_pw
 
-        self.login_success = True
+            self.login_finish = False
+            while True:
+                try:
+                    ptt_bot.login(
+                        self.ptt_id,
+                        current_pw,
+                        kick_other_login=True
+                    )
+                except PTT.exceptions.WrongIDorPassword:
+                    ptt_bot.log('帳號密碼錯誤')
+                    self.console.system_alert('帳號密碼錯誤')
+                    self.login_finish = True
+                    return
+                except PTT.exceptions.LoginError:
+                    ptt_bot.log('登入失敗')
+                    self.console.system_alert('登入失敗')
+                    self.login_finish = True
+                    return
+                except PTT.exceptions.LoginTooOften:
+                    ptt_bot.log('請稍等一下再登入')
+                    self.console.system_alert('請稍等一下再登入')
+                    self.login_finish = True
+                    return
+                except PTT.exceptions.ConnectError:
+                    ptt_bot.log('連線有問題')
+                    self.console.system_alert('連線有問題')
+                    self.login_finish = True
+                    return
+                break
 
-        last_otp = ''
-        while not self.call_logout:
-            time.sleep(0.1)
+            self.login_finish = True
+            self.console.ptt_id = self.ptt_id
+
+            self.login_success = True
+
+            last_otp = ''
+            while not self.call_logout:
+                time.sleep(0.1)
+                if self.otp is not None:
+                    current_otp = self.otp.now()
+
+                    if last_otp != current_otp:
+                        self.logger.show_value(Logger.INFO, '新密碼', current_otp)
+
+                        try:
+                            if self.console.test_mode:
+                                ptt_bot.change_pw(self.ptt_pw)
+                            else:
+                                ptt_bot.change_pw(current_otp)
+                        except PTT.exceptions.ConnectionClosed:
+                            self.catch_error = True
+                            break
+                        except PTT.exceptions.Timeout:
+                            self.catch_error = True
+                            break
+
+                        self.console.config.set(config.key_current_otp, current_otp)
+                        self.console.config.set(config.key_last_otp, last_otp)
+                        self.console.config.write()
+
+                        self.console.current_otp = current_otp
+                        if self.console.otp_form is not None:
+                            self.console.otp_form.update_otp()
+                        last_otp = current_otp
+                        self.logger.show(Logger.INFO, '密碼變更完成')
+
+            if self.catch_error:
+                continue
+
             if self.otp is not None:
-                current_otp = self.otp.now()
-
-                if last_otp != current_otp:
-                    self.logger.show_value(Logger.INFO, '新密碼', current_otp)
-
-                    self.console.config.set(config.key_current_otp, current_otp)
-                    self.console.config.set(config.key_last_otp, last_otp)
-                    self.console.config.write()
-
-                    if self.console.test_mode:
-                        ptt_bot.change_pw(self.ptt_pw)
-                    else:
-                        ptt_bot.change_pw(current_otp)
-                    self.console.current_otp = current_otp
-                    if self.console.otp_form is not None:
-                        self.console.otp_form.update_otp()
-                    last_otp = current_otp
-                    self.logger.show(Logger.INFO, '密碼變更完成')
-
-        if self.otp is not None:
-            ptt_bot.change_pw(self.ptt_pw)
+                ptt_bot.change_pw(self.ptt_pw)
+            break
+        self.console.otp_form.close_form()
+        self.console.otp_form = None
         ptt_bot.logout()
 
         self.reset()
