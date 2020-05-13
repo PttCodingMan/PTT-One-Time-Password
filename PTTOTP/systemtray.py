@@ -96,6 +96,10 @@ class Form(QSystemTrayIcon):
         self.login_success = False
         self.set_menu(False)
         self.console.ptt_adapter.logout()
+        
+        if self.console.otp_form is not None:
+            self.console.otp_form.close()
+            self.console.otp_form = None
 
         self.in_process = False
 

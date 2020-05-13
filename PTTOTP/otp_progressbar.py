@@ -354,7 +354,7 @@ class Form(QDialog):
 
         if self.timer_thread is None:
             self.timer_thread = threading.Thread(target=self.timer)
-            self.timer_thread.daemon = True
+            # self.timer_thread.daemon = True
             self.timer_thread.start()
 
     def timer(self):
@@ -367,22 +367,32 @@ class Form(QDialog):
             self.logger.show_value(Logger.INFO, 'current_sec', current_sec)
 
             for value in range(current_sec, 30):
-                self.bar.setValue(value)
 
+                self.bar.setValue(value)
                 self.logger.show_value(Logger.TRACE, 'value', value)
 
                 temp_sec = value
                 if self.call_close:
                     break
                 while temp_sec == value:
+                    if self.call_close:
+                        break
                     time.sleep(0.05)
                     temp_sec = int(strftime("%S")) % 30
                     # self.logger.show_value(Logger.INFO, 'temp_sec', temp_sec)
 
+        self.logger.show(Logger.INFO, 'timer finish')
+
     def close_form(self):
+        self.logger.show(Logger.INFO, '1')
         self.call_close = True
+        self.logger.show(Logger.INFO, '2')
         time.sleep(0.5)
-        self.hide()
+        self.logger.show(Logger.INFO, '3')
+        self.bar.close()
+        self.logger.show(Logger.INFO, '4')
+        self.close()
+        self.logger.show(Logger.INFO, '5')
 
     def closeEvent(self, event):
         self.logger.show(Logger.INFO, '直接關閉')

@@ -140,8 +140,8 @@ class API:
             if self.otp is not None:
                 ptt_bot.change_pw(self.ptt_pw)
             break
-        self.console.otp_form.close_form()
-        self.console.otp_form = None
+        self.logger.show(Logger.INFO, '1')
         ptt_bot.logout()
+        self.logger.show(Logger.INFO, '4')
 
         self.reset()
