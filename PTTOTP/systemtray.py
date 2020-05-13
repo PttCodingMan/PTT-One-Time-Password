@@ -37,6 +37,7 @@ class Form(QSystemTrayIcon):
 
         self.login_success = False
         self.in_process = False
+        self.about_window_form = None
 
         self.show_login_form()
 
@@ -66,14 +67,26 @@ class Form(QSystemTrayIcon):
 
     def otp_progressbar_func(self):
         self.logger.show(Logger.INFO, '啟動驗證碼視窗')
-        self.console.otp_form = otp_progressbar.Form(self.console)
-        self.console.otp_form.exec_()
+        if self.console.otp_form is None:
+            self.console.otp_form = otp_progressbar.Form(self.console)
+
+        if self.console.otp_form.isHidden():
+            self.console.otp_form.exec_()
+        else:
+            self.console.otp_form.showMinimized()
+            self.console.otp_form.showNormal()
 
     def about_func(self):
 
         self.logger.show(Logger.INFO, '啟動關於視窗')
-        about_window_form = about_window.Form(self.console)
-        about_window_form.exec_()
+        if self.about_window_form is None:
+            self.about_window_form = about_window.Form(self.console)
+
+        if self.about_window_form.isHidden():
+            self.about_window_form.exec_()
+        else:
+            self.about_window_form.showMinimized()
+            self.about_window_form.showNormal()
 
     def logout_func(self):
         if self.in_process:
@@ -152,6 +165,9 @@ class Form(QSystemTrayIcon):
             self.system_alert(f'{self.console.ptt_id} 歡迎回來')
 
         self.console.ptt_adapter.enable_otp()
+
+        self.console.otp_form = otp_progressbar.Form(self.console)
+        self.console.otp_form.show()
 
         # otp_key = self.console.config.get(config.key_otp_key)
         # print(otp_key)

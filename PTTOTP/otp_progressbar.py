@@ -3,17 +3,19 @@ import time
 import threading
 import sys
 
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QWidget, QVBoxLayout, QApplication
+from PySide2.QtCore import Qt, QRectF
 
-from PySide2.QtGui import QColor, QFont
+from PySide2.QtGui import QColor, QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, \
+    QPalette, QGuiApplication
 from PySide2.QtWidgets import QDialog
 
 from log import Logger
 import util
 import config
 
-class QRoundProgressBar(QtWidgets.QWidget):
+
+class QRoundProgressBar(QWidget):
     StyleDonut = 1
     StylePie = 2
     StyleLine = 3
@@ -27,7 +29,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
     UF_PERCENT = 2
     UF_MAX = 4
 
-    def __init__(self):
+    def __init__(self, console):
         super().__init__()
         self.min = 0
         self.max = 100
@@ -43,6 +45,8 @@ class QRoundProgressBar(QtWidgets.QWidget):
         self.updateFlags = self.UF_PERCENT
         self.gradientData = []
         self.donutThicknessRatio = 0.75
+
+        self.console = console
 
     def setRange(self, min, max):
         self.min = min
@@ -124,13 +128,13 @@ class QRoundProgressBar(QtWidgets.QWidget):
 
     def paintEvent(self, event):
         outerRadius = min(self.width(), self.height())
-        baseRect = QtCore.QRectF(1, 1, outerRadius - 2, outerRadius - 2)
+        baseRect = QRectF(1, 1, outerRadius - 2, outerRadius - 2)
 
-        buffer = QtGui.QImage(outerRadius, outerRadius, QtGui.QImage.Format_ARGB32)
+        buffer = QImage(outerRadius, outerRadius, QImage.Format_ARGB32)
         buffer.fill(0)
 
-        p = QtGui.QPainter(buffer)
-        p.setRenderHint(QtGui.QPainter.Antialiasing)
+        p = QPainter(buffer)
+        p.setRenderHint(QPainter.Antialiasing)
 
         # data brush
         self.rebuildDataBrushIfNeeded()
@@ -155,7 +159,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
         # finally draw the bar
         p.end()
 
-        painter = QtGui.QPainter(self)
+        painter = QPainter(self)
         painter.drawImage(0, 0, buffer)
 
     def drawBackground(self, p, baseRect):
@@ -165,17 +169,17 @@ class QRoundProgressBar(QtWidgets.QWidget):
         bs = self.barStyle
         if bs == self.StyleDonut:
             # p.setPen(QtGui.QPen(self.palette().shadow().color(), self.outlinePenWidth))
-            p.setPen(QtGui.QPen(self.palette().shadow().color(), -1))
+            p.setPen(QPen(self.palette().shadow().color(), -1))
             # p.setBrush(self.palette().base())
             p.setBrush(QColor(7, 93, 145))
             p.drawEllipse(baseRect)
 
         elif bs == self.StylePie:
-            p.setPen(QtGui.QPen(self.palette().base().color(), self.outlinePenWidth))
+            p.setPen(QPen(self.palette().base().color(), self.outlinePenWidth))
             p.setBrush(self.palette().base())
             p.drawEllipse(baseRect)
         elif bs == self.StyleLine:
-            p.setPen(QtGui.QPen(self.palette().base().color(), self.outlinePenWidth))
+            p.setPen(QPen(self.palette().base().color(), self.outlinePenWidth))
             p.setBrush(Qt.NoBrush)
             p.drawEllipse(
                 baseRect.adjusted(self.outlinePenWidth / 2, self.outlinePenWidth / 2, -self.outlinePenWidth / 2,
@@ -188,7 +192,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
 
         # for Line style
         if self.barStyle == self.StyleLine:
-            p.setPen(QtGui.QPen(self.palette().highlight().color(), self.dataPenWidth))
+            p.setPen(QPen(self.palette().highlight().color(), self.dataPenWidth))
             p.setBrush(Qt.NoBrush)
             p.drawArc(baseRect.adjusted(self.outlinePenWidth / 2, self.outlinePenWidth / 2, -self.outlinePenWidth / 2,
                                         -self.outlinePenWidth / 2),
@@ -197,7 +201,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
             return
 
         # for Pie and Donut styles
-        dataPath = QtGui.QPainterPath()
+        dataPath = QPainterPath()
         dataPath.setFillRule(Qt.WindingFill)
 
         # pie segment outer
@@ -209,7 +213,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
         p.setBrush(QColor(255, 255, 255, 255 * 0.3))
 
         # pen = QtGui.QPen(self.palette().shadow().color(), self.dataPenWidth)
-        pen = QtGui.QPen(self.palette().shadow().color(), -1)
+        pen = QPen(self.palette().shadow().color(), -1)
         p.setPen(pen)
         p.drawPath(dataPath)
 
@@ -221,7 +225,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
             innerRadius = outerRadius * self.donutThicknessRatio
 
         delta = (outerRadius - innerRadius) / 2.
-        innerRect = QtCore.QRectF(delta, delta, innerRadius, innerRadius)
+        innerRect = QRectF(delta, delta, innerRadius, innerRadius)
         return innerRect, innerRadius
 
     def drawInnerBackground(self, p, innerRect):
@@ -229,7 +233,7 @@ class QRoundProgressBar(QtWidgets.QWidget):
             p.setBrush(self.palette().alternateBase())
 
             cmod = p.compositionMode()
-            p.setCompositionMode(QtGui.QPainter.CompositionMode_Source)
+            p.setCompositionMode(QPainter.CompositionMode_Source)
 
             p.drawEllipse(innerRect)
 
@@ -289,9 +293,9 @@ class QRoundProgressBar(QtWidgets.QWidget):
         if self.rebuildBrush:
             self.rebuildBrush = False
 
-            dataBrush = QtGui.QConicalGradient()
+            dataBrush = QConicalGradient()
             dataBrush.setCenter(0.5, 0.5)
-            dataBrush.setCoordinateMode(QtGui.QGradient.StretchToDeviceMode)
+            dataBrush.setCoordinateMode(QGradient.StretchToDeviceMode)
 
             for pos, color in self.gradientData:
                 dataBrush.setColorAt(1.0 - pos, color)
@@ -300,15 +304,20 @@ class QRoundProgressBar(QtWidgets.QWidget):
             dataBrush.setAngle(self.nullPosition)
 
             p = self.palette()
-            p.setBrush(QtGui.QPalette.Highlight, dataBrush)
+            p.setBrush(QPalette.Highlight, dataBrush)
             self.setPalette(p)
+
+    def mouseDoubleClickEvent(self, event):
+        clipboard = QGuiApplication.clipboard()
+        clipboard.setText(self.format.strip())
+        self.console.system_alert('驗證碼已經複製到剪貼簿')
 
 
 class Form(QDialog):
     def __init__(self, console):
         super(type(self), self).__init__()
 
-        self.bar = QRoundProgressBar()
+        self.bar = QRoundProgressBar(console)
         self.bar.setFixedSize(300, 300)
 
         self.bar.setDataPenWidth(0)
@@ -317,13 +326,13 @@ class Form(QDialog):
         self.bar.setDecimals(0)
         self.bar.setNullPosition(90)
         self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
-        self.bar.setDataColors([(0., QtGui.QColor.fromRgb(65, 105, 225))])
+        self.bar.setDataColors([(0., QColor.fromRgb(65, 105, 225))])
 
         self.bar.setRange(0, 29)
 
         self.setWindowTitle('Ptt OTP 驗證碼')
 
-        lay = QtWidgets.QVBoxLayout()
+        lay = QVBoxLayout()
         lay.addWidget(self.bar)
         self.setLayout(lay)
 
@@ -372,6 +381,10 @@ class Form(QDialog):
                     temp_sec = int(strftime("%S")) % 30
                     # self.logger.show_value(Logger.INFO, 'temp_sec', temp_sec)
 
+    def closeEvent(self, event):
+        self.logger.show(Logger.INFO, '直接關閉')
+        self.console.system_alert('背景執行中')
+
 
 def update_thread():
     for i in range(10):
@@ -383,7 +396,7 @@ def update_thread():
 
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     dlg = Form()
     dlg.show()
 

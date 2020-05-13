@@ -4,6 +4,8 @@ import time
 from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QApplication,
                                QVBoxLayout, QDialog)
 
+from PySide2.QtCore import Qt
+
 # from PySide2.QtGui import QIcon, QPixmap
 # from PySide2.QtCore import QByteArray
 
@@ -24,7 +26,7 @@ class Form(QDialog):
         self.setWindowTitle("PttOTP 登入視窗")
 
         self.setMinimumWidth(250)
-
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setWindowIcon(util.load_icon(config.icon_small))
         # Create widgets
         self.label_id = QLabel('請輸入批踢踢帳號')
