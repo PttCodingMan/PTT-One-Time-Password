@@ -354,7 +354,7 @@ class Form(QDialog):
 
         if self.timer_thread is None:
             self.timer_thread = threading.Thread(target=self.timer)
-            # self.timer_thread.daemon = True
+            self.timer_thread.daemon = True
             self.timer_thread.start()
 
     def timer(self):
