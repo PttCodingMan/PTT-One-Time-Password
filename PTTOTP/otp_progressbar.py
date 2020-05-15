@@ -364,7 +364,7 @@ class Form(QDialog):
         while not self.call_close:
             current_sec = int(strftime("%S")) % 30
 
-            self.logger.show_value(Logger.INFO, 'current_sec', current_sec)
+            self.logger.show_value(Logger.TRACE, 'current_sec', current_sec)
 
             for value in range(current_sec, 30):
 
@@ -384,15 +384,10 @@ class Form(QDialog):
         self.logger.show(Logger.INFO, 'timer finish')
 
     def close_form(self):
-        self.logger.show(Logger.INFO, '1')
         self.call_close = True
-        self.logger.show(Logger.INFO, '2')
         time.sleep(0.5)
-        self.logger.show(Logger.INFO, '3')
         self.bar.close()
-        self.logger.show(Logger.INFO, '4')
         self.close()
-        self.logger.show(Logger.INFO, '5')
 
     def closeEvent(self, event):
         self.logger.show(Logger.INFO, '直接關閉')
@@ -402,7 +397,7 @@ class Form(QDialog):
 def update_thread():
     for i in range(10):
         print('===================================')
-        dlg.update_otp('12345' + str(i))
+        dlg.update_otp('12345' + str(i % 10))
         sleep_time = 30 - (int(strftime("%S")) % 30)
         print(f'sleep {sleep_time}')
         time.sleep(sleep_time)

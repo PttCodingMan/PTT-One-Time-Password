@@ -62,11 +62,14 @@ class API:
 
         while True:
 
-            if self.catch_error:
-                self.catch_error = False
-                current_pw = current_otp
-            else:
+            if self.console.test_mode:
                 current_pw = self.ptt_pw
+            else:
+                if self.catch_error:
+                    self.catch_error = False
+                    current_pw = last_otp
+                else:
+                    current_pw = self.ptt_pw
 
             self.login_finish = False
             while True:
@@ -78,9 +81,17 @@ class API:
                     )
                 except PTT.exceptions.WrongIDorPassword:
                     ptt_bot.log('帳號密碼錯誤')
-                    self.console.system_alert('帳號密碼錯誤')
-                    self.login_finish = True
-                    return
+                    if not self.console.config.loaded:
+                        self.console.config.load()
+
+                    if self.console.config.get(config.key_running):
+                        self.console.system_alert('從錯誤恢復中')
+                        current_pw = self.console.config.get(config.key_last_otp)
+                        continue
+                    else:
+                        self.console.system_alert('帳號密碼錯誤')
+                        self.login_finish = True
+                        return
                 except PTT.exceptions.LoginError:
                     ptt_bot.log('登入失敗')
                     self.console.system_alert('登入失敗')
@@ -112,6 +123,10 @@ class API:
                     if last_otp != current_otp:
                         self.logger.show_value(Logger.INFO, '新密碼', current_otp)
 
+                        self.console.config.set(config.key_current_otp, current_otp)
+                        self.console.config.set(config.key_last_otp, last_otp)
+                        self.console.config.write()
+
                         try:
                             if self.console.test_mode:
                                 ptt_bot.change_pw(self.ptt_pw)
@@ -123,10 +138,6 @@ class API:
                         except PTT.exceptions.Timeout:
                             self.catch_error = True
                             break
-
-                        self.console.config.set(config.key_current_otp, current_otp)
-                        self.console.config.set(config.key_last_otp, last_otp)
-                        self.console.config.write()
 
                         self.console.current_otp = current_otp
                         if self.console.otp_form is not None:
@@ -140,8 +151,7 @@ class API:
             if self.otp is not None:
                 ptt_bot.change_pw(self.ptt_pw)
             break
-        self.logger.show(Logger.INFO, '1')
+
         ptt_bot.logout()
-        self.logger.show(Logger.INFO, '4')
 
         self.reset()

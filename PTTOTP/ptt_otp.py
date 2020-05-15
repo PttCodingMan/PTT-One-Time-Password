@@ -22,6 +22,7 @@ if __name__ == '__main__':
     console.config = config.Config(console)
     console.ptt_adapter = ptt_adapter.API(console)
 
+
     system_tray = systemtray.Form(console)
     app.exec_()
     sys.exit()
