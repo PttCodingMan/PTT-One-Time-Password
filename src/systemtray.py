@@ -19,7 +19,7 @@ class Form(QSystemTrayIcon):
     def __init__(self, console):
         super(Form, self).__init__(None)
 
-        self.logger = Logger('OTP', Logger.INFO)
+        self.logger = Logger('SysTray', Logger.INFO)
 
         self.console = console
         console.system_alert = self.system_alert
