@@ -30,7 +30,9 @@ class Form(QDialog):
 
         layout = QVBoxLayout()
         for rule_line in rule_text.split('\n'):
-            layout.addWidget(QLabel(rule_line))
+            label = QLabel(rule_line)
+            label.setFont(config.font)
+            layout.addWidget(label)
 
         label = QLabel()
         label.setPixmap(QPixmap('./temp.png'))
