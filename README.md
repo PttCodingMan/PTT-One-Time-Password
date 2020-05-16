@@ -33,6 +33,7 @@
 ###### 1. 點選系統列批踢踢動態密碼圖示，點選離開就可以暫時解決批踢踢動態密碼的保護
 
 回報問題
+-------------------
 #### 開個 [issue](https://github.com/PttCodingMan/PTT-One-Time-Password/issues/new) 追蹤問題也可以直接問我 [![chatroom icon](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/PyPtt)
 
 重要
