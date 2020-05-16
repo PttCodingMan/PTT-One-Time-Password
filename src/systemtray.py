@@ -60,6 +60,8 @@ class Form(QSystemTrayIcon):
             act = menu.addAction("登入")
             act.triggered.connect(self.show_login_form)
 
+        act = menu.addAction("回報問題")
+        act.triggered.connect(self.report_issue_func)
         act = menu.addAction("關於")
         act.triggered.connect(self.about_func)
         menu.addSeparator()
@@ -67,6 +69,9 @@ class Form(QSystemTrayIcon):
         act.triggered.connect(self.exit_func)
 
         self.setContextMenu(menu)
+
+    def report_issue_func(self):
+        os.system("start \"\" https://github.com/PttCodingMan/PTT-One-Time-Password/issues")
 
     def otp_progressbar_func(self):
         self.logger.show(Logger.INFO, '啟動驗證碼視窗')
