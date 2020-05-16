@@ -29,25 +29,29 @@ class Form(QDialog):
 以下為 Ptt OTP 使用守則，如不同意或無法遵守
 請勿使用本軟體
 
-1. 切勿同一帳號同時執行兩個以上批踢踢動態密碼程式
-2. Ptt OTP 會顯示並儲存敏感資訊，請勿在公共電腦上執行
-3. 軟體出錯難免，如軟體無法正確還原您的密碼，請使用註冊
-    信箱取回帳號功能
+1. 註冊批踢踢動態密碼後，會產生帳號專屬檔案在 data 資料夾，內含所有批踢踢動態密碼相關重要資訊，建議備份此資料夾，以保護您動態密碼金鑰的安全
+一旦遺失所有備份或者硬碟毀損，作者也無法將您的帳號密碼恢復，請使用信箱重設密碼功能，以恢復您的帳號密碼
+2. 如果您的批踢踢動態密碼程式，不幸因為各種原因當機或者關閉，您可以直接重啟程式，批踢踢動態密碼會自動恢復您的動態密碼功能
+3. 批踢踢動態密碼，會顯示並儲存敏感資訊，請勿在公共電腦上執行批踢踢動態密碼
+4. 切勿同時執行兩個以上批踢踢動態密碼程式
+5. 免責聲明，軟體皆存在無法迴避之風險，經使用本軟體造成所有損害皆與開發者無關
 '''
         rule_text = rule_text.strip()
 
         layout = QVBoxLayout()
         for rule_line in rule_text.split('\n'):
-            layout.addWidget(QLabel(rule_line))
+            label = QLabel(rule_line)
+            label.setFont(config.font)
+            layout.addWidget(label)
         # Set dialog layout
 
         button_layout = QHBoxLayout()
 
-        ok_button = QPushButton("我會遵守")
+        ok_button = QPushButton("我同意並會遵守")
         ok_button.clicked.connect(self.click_ok)
         button_layout.addWidget(ok_button)
 
-        not_ok_button = QPushButton("無法遵守")
+        not_ok_button = QPushButton("恕我無法同意並遵守")
         not_ok_button.clicked.connect(self.click_not_ok)
         button_layout.addWidget(not_ok_button)
 

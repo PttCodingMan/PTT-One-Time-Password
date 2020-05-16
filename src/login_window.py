@@ -41,8 +41,13 @@ class Form(QDialog):
         layout.addWidget(label)
         layout.addWidget(QLabel())
 
-        self.label_id = QLabel('批踢踢帳號')
-        self.label_id.setAlignment(Qt.AlignCenter)
+        label = QLabel('批踢踢帳號')
+        label.setFont(config.font)
+        label.setAlignment(Qt.AlignCenter)
+        self.label_id = label
+
+        # self.label_id = QLabel('批踢踢帳號')
+        # self.label_id.setAlignment(Qt.AlignCenter)
         self.edit_id = QLineEdit()
         self.edit_id.setMaximumWidth(150)
         self.edit_id.setAlignment(Qt.AlignHCenter)
