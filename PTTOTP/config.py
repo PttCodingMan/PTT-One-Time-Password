@@ -39,6 +39,9 @@ class Config:
         return self.data[key]
 
     def write(self):
+
+        if self.console.ptt_id is None:
+            return
         current_path = f'./data/{self.console.ptt_id}/config.txt'
         with open(current_path, 'w', encoding='utf8') as f:
             json.dump(self.data, f, indent=4, ensure_ascii=False)
