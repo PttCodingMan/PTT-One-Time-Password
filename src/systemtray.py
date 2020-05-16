@@ -22,12 +22,10 @@ class Form(QSystemTrayIcon):
         self.logger = Logger('SysTray', Logger.INFO)
 
         self.console = console
-        console.system_alert = self.system_alert
+        console.system_alert_func = self.system_alert
 
         self.icon = util.load_icon(config.icon_small)
         self.setIcon(self.icon)
-
-        self.set_menu(False)
 
         self.setToolTip('Ptt OTP')
 
@@ -35,10 +33,14 @@ class Form(QSystemTrayIcon):
 
         self.activated.connect(self.icon_clicked)
 
+        self.show_login = True
+        self.reset()
+
+    def reset(self):
         self.login_success = False
         self.in_process = False
         self.about_window_form = None
-        self.show_login = False
+        self.set_menu(False)
 
         self.show_login_form()
 
@@ -51,8 +53,8 @@ class Form(QSystemTrayIcon):
 
             act = menu.addAction("顯示驗證碼")
             act.triggered.connect(self.otp_progressbar_func)
-            act = menu.addAction("登出")
-            act.triggered.connect(self.press_logout)
+            # act = menu.addAction("登出")
+            # act.triggered.connect(self.press_logout)
         else:
             self.logger.show_value(Logger.INFO, '設定選單', '登入')
             act = menu.addAction("登入")
@@ -71,11 +73,8 @@ class Form(QSystemTrayIcon):
         if self.console.otp_form is None:
             self.console.otp_form = otp_progressbar.Form(self.console)
 
-        if self.console.otp_form.isHidden():
-            self.console.otp_form.exec_()
-        else:
-            self.console.otp_form.showMinimized()
-            self.console.otp_form.showNormal()
+        self.console.otp_form.showMinimized()
+        self.console.otp_form.showNormal()
 
     def about_func(self):
 
@@ -103,14 +102,14 @@ class Form(QSystemTrayIcon):
         self.console.ptt_adapter.logout()
 
         if self.console.otp_form is not None:
-            self.console.otp_form.close()
-            self.console.otp_form = None
+            self.console.current_otp = ''
+            self.console.otp_form.hide()
+            # self.console.otp_form.close()
+            # self.console.otp_form.close_form()
+            # self.console.otp_form = None
 
         self.in_process = False
-
-        if self.show_login:
-            self.show_login = False
-            self.show_login_form()
+        self.reset()
 
     def exit_func(self):
 
@@ -123,6 +122,8 @@ class Form(QSystemTrayIcon):
         sys.exit()
 
     def show_login_form(self):
+        if not self.show_login:
+            return
         if self.in_process:
             return
         self.in_process = True
@@ -184,6 +185,7 @@ class Form(QSystemTrayIcon):
             self.system_alert(f'{self.console.ptt_id} 歡迎回來')
 
         self.set_menu(True)
+
         self.console.ptt_adapter.enable_otp()
 
         # otp_key = self.console.config.get(config.key_otp_key)
@@ -192,8 +194,8 @@ class Form(QSystemTrayIcon):
 
         self.in_process = False
 
-        self.console.otp_form = otp_progressbar.Form(self.console)
-        self.console.otp_form.show()
+        if self.console.otp_form is None:
+            self.console.otp_form = otp_progressbar.Form(self.console)
         self.console.otp_form.showMinimized()
         self.console.otp_form.showNormal()
 

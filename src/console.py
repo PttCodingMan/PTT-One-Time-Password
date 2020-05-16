@@ -6,7 +6,7 @@ class Console:
     config = None
     ptt_adapter = None
     log_handler = None
-    system_alert = None
+    system_alert_func = None
     otp_form = None
     current_otp = None
 
@@ -16,3 +16,8 @@ class Console:
         logger = Logger('Console', Logger.INFO)
         if self.test_mode:
             logger.show(Logger.INFO, '測試模式')
+
+    def system_alert(self, msg):
+        if self.system_alert_func is None:
+            return
+        self.system_alert_func(msg)

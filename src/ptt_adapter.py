@@ -24,6 +24,8 @@ class API:
         self.catch_error = False
         self.first = True
 
+        self.logger.show(Logger.INFO, '清除資料完成')
+
     def logout(self):
 
         self.logger.show(Logger.INFO, '開始登出')

@@ -6,7 +6,7 @@ import sys
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QApplication
 from PySide2.QtCore import Qt, QRectF
 
-from PySide2.QtGui import QColor, QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, \
+from PySide2.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, \
     QPalette, QGuiApplication
 from PySide2.QtWidgets import QDialog
 
@@ -339,8 +339,11 @@ class Form(QDialog):
         self.console = console
         self.timer_thread = None
         self.call_close = False
+        self.run_background = True
         self.logger = Logger('Progress', Logger.INFO)
         self.setWindowIcon(util.load_icon(config.icon_small))
+
+        self.logger.show(Logger.INFO, '產生新驗證碼視窗')
 
         self.update_otp()
 
@@ -390,14 +393,21 @@ class Form(QDialog):
         self.close()
 
     def closeEvent(self, event):
-        self.logger.show(Logger.INFO, '直接關閉')
-        self.console.system_alert('背景執行中')
+
+        self.logger.show(Logger.INFO, '關閉事件')
+        if self.run_background:
+            self.console.system_alert('背景執行中')
 
 
 def update_thread():
+    global console
     for i in range(10):
         print('===================================')
-        dlg.update_otp('12345' + str(i % 10))
+
+        console.current_otp = '12345' + str(i % 10)
+
+        if dlg is not None:
+            dlg.update_otp()
         sleep_time = 30 - (int(strftime("%S")) % 30)
         print(f'sleep {sleep_time}')
         time.sleep(sleep_time)
@@ -405,11 +415,26 @@ def update_thread():
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    dlg = Form()
-    dlg.show()
+    import console
+    console = console.Console()
+
+    dlg = Form(console)
+    dlg.showMinimized()
+    dlg.showNormal()
 
     thread = threading.Thread(target=update_thread)
     thread.daemon = True
     thread.start()
+
+    time.sleep(3)
+
+    dlg.run_background = False
+
+    dlg.close()
+    dlg = None
+
+    dlg = Form(console)
+    dlg.showMinimized()
+    dlg.showNormal()
 
     sys.exit(app.exec_())
