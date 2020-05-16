@@ -1,5 +1,5 @@
 @echo off
 cls
 
-pyinstaller --name=PttOneTimePasswordDemo --icon=PTTOTP.ico --windowed --onefile PTTOTP/ptt_otp.py
+pyinstaller --name=PttOneTimePasswordDemo --icon=src/PTTOTP.ico --windowed --onefile src/ptt_otp.py
 
