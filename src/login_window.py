@@ -1,8 +1,7 @@
 import sys
 import time
 
-from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QApplication,
-                               QVBoxLayout, QDialog)
+from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QDialog)
 
 from PySide2.QtCore import Qt
 
@@ -25,27 +24,58 @@ class Form(QDialog):
 
         self.setWindowTitle("PttOTP 登入視窗")
 
-        self.setMinimumWidth(300)
+        self.setMinimumWidth(260)
         self.setMinimumHeight(150)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setWindowIcon(util.load_icon(config.icon_small))
         # Create widgets
-        self.label_id = QLabel('請輸入批踢踢帳號')
-        self.edit_id = QLineEdit()
-        self.edit_id.setAlignment(Qt.AlignHCenter)
-        self.label_pw = QLabel('請輸入批踢踢密碼')
-        self.edit_pw = QLineEdit()
-        self.edit_pw.setAlignment(Qt.AlignHCenter)
-        self.edit_pw.setEchoMode(QLineEdit.Password)
-        self.button = QPushButton("登入")
-        self.button.clicked.connect(self.login)
-        # Create layout and add widgets
+
         layout = QVBoxLayout()
+
+        label = QLabel()
+        pixmap = util.load_icon(config.icon_small)
+        pixmap = pixmap.scaled(200, 200, Qt.KeepAspectRatio)
+
+        label.setPixmap(pixmap)
+        label.setAlignment(Qt.AlignCenter)
+        layout.addWidget(label)
+        layout.addWidget(QLabel())
+
+        self.label_id = QLabel('批踢踢帳號')
+        self.label_id.setAlignment(Qt.AlignCenter)
+        self.edit_id = QLineEdit()
+        self.edit_id.setMaximumWidth(150)
+        self.edit_id.setAlignment(Qt.AlignHCenter)
+        layout_id = QHBoxLayout()
+        layout_id.addWidget(self.edit_id)
+
+        label = QLabel('批踢踢密碼')
+        label.setAlignment(Qt.AlignCenter)
+        label.setFont(config.font)
+        self.label_pw = label
+
+        edit = QLineEdit()
+        edit.setAlignment(Qt.AlignHCenter)
+        edit.setEchoMode(QLineEdit.Password)
+        edit.setFont(config.font)
+        edit.setMaximumWidth(150)
+        layout_pw = QHBoxLayout()
+        layout_pw.addWidget(edit)
+        self.edit_pw = edit
+
+        self.button = QPushButton("登入")
+        self.button.setMaximumWidth(80)
+        self.button.clicked.connect(self.login)
+        layout_b = QHBoxLayout()
+        layout_b.addWidget(self.button)
+
         layout.addWidget(self.label_id)
-        layout.addWidget(self.edit_id)
+        layout.addLayout(layout_id)
         layout.addWidget(self.label_pw)
-        layout.addWidget(self.edit_pw)
-        layout.addWidget(self.button)
+        layout.addLayout(layout_pw)
+        layout.addLayout(layout_b)
+        layout.addWidget(QLabel())
+        layout.addWidget(QLabel(f'版本: {config.version}'))
         # Set dialog layout
         self.setLayout(layout)
         # Add button signal to greetings slot
