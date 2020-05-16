@@ -17,8 +17,6 @@ if __name__ == '__main__':
     app.setQuitOnLastWindowClosed(False)
 
     console = console.Console()
-    if console.test_mode:
-        logger.show(Logger.INFO, '測試模式')
     console.config = config.Config(console)
     console.ptt_adapter = ptt_adapter.API(console)
 
