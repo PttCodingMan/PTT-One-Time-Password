@@ -1,6 +1,5 @@
 ![PTTOTP: PTT One-Time Password in Python](https://i.imgur.com/zFxDCU7.png)
 # 批踢踢動態密碼
-## 此專案已經停止維護
 
 ###### 批踢踢動態密碼 (英語：PTT One-Time Password) 是一個專屬於批踢踢的動態密碼系統，您需要在您的電腦上執行此程式，並搭配手機的 Google Authenticator，批踢踢動態密碼就可以提供您的批踢踢帳號更好的安全性
 ###### 
@@ -19,6 +18,7 @@
 如何使用
 -------------------
 ###### 您需要一台連接網路的電腦，作為批踢踢動態密碼主機
+###### 使用前，建議您熟悉信箱重設帳密操作流程，以免有意外導致無法恢復
 ##### 安裝與註冊
 ###### 1. 下載批踢踢動態密碼 [下載](https://github.com/PttCodingMan/PTT-One-Time-Password/releases) 與 Google Authenticator [Android](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=zh_TW) or [iOS](https://itunes.apple.com/tw/app/google-authenticator/id388497605?mt=8)
 ###### 2. 執行 PttOneTimePassword.exe 並輸入您的批踢踢帳號密碼
