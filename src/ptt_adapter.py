@@ -60,7 +60,14 @@ class API:
 
     def run(self):
 
-        ptt_bot = PTT.API()
+        if self.console.test_local:
+            ptt_bot = PTT.API(
+                host=PTT.data_type.host_type.LOCALHOST,
+                connect_mode=PTT.connect_core.connect_mode.TELNET,
+                port=8888
+            )
+        else:
+            ptt_bot = PTT.API()
 
         while True:
 

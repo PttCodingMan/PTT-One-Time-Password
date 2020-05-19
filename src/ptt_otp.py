@@ -15,7 +15,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
 
-    console = console.Console()
+    console = console.Console(sys.argv)
     console.config = config.Config(console)
     console.ptt_adapter = ptt_adapter.API(console)
 
