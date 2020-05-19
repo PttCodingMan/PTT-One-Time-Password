@@ -11,11 +11,22 @@ class Console:
     current_otp = None
 
     test_mode = True
+    test_local = True
 
-    def __init__(self):
+    def __init__(self, argv):
         logger = Logger('Console', Logger.INFO)
+
+        if '-debug' in argv:
+            self.test_mode = True
+
+        if '-test_local' in argv:
+            self.test_local = True
+
         if self.test_mode:
             logger.show(Logger.INFO, '測試模式')
+
+        if self.test_local:
+            logger.show(Logger.INFO, '本機測試模式')
 
     def system_alert(self, msg):
         if self.system_alert_func is None:
