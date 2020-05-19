@@ -35,7 +35,7 @@ class Form(QDialog):
             layout.addWidget(label)
 
         label = QLabel()
-        label.setPixmap(QPixmap('./temp.png'))
+        label.setPixmap(QPixmap(f'./{self.console.ptt_id}_temp.png'))
         layout.addWidget(label)
 
         button_layout = QHBoxLayout()

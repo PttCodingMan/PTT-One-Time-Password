@@ -170,13 +170,13 @@ class Form(QSystemTrayIcon):
 
             otp_url = pyotp.totp.TOTP(otp_key).provisioning_uri(self.console.ptt_id, issuer_name="Ptt OTP")
             img = qrcode.make(otp_url)
-            img.save('./temp.png')
+            img.save(f'./{self.console.ptt_id}_temp.png')
 
             show_verify_form = show_verify.Form(self.console, otp_key)
             show_verify_form.show()
             show_verify_form.exec_()
 
-            os.remove('./temp.png')
+            os.remove(f'./{self.console.ptt_id}_temp.png')
 
             if not show_verify_form.ok:
                 self.system_alert('Ptt OTP 感謝您的試用')
