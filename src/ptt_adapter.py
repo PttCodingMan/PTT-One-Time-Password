@@ -75,7 +75,6 @@ class API:
                 current_pw = self.ptt_pw
             else:
                 if self.catch_error:
-                    self.catch_error = False
                     current_pw = last_otp
                 else:
                     current_pw = self.ptt_pw
@@ -130,15 +129,18 @@ class API:
                     self.login_finish = True
                     return
                 except PTT.exceptions.ConnectError:
-                    ptt_bot.log('連線有問題')
                     self.console.system_alert('連線有問題')
-                    self.login_finish = True
-                    return
+                    if self.catch_error:
+                        continue
+                    else:
+                        self.login_finish = True
+                        return
                 break
 
             if recover_level != 0:
                 self.console.system_alert('從錯誤恢復成功')
 
+            self.catch_error = False
             self.login_finish = True
             self.console.ptt_id = self.ptt_id
 
