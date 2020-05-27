@@ -15,6 +15,7 @@ class Console:
 
     def __init__(self, argv):
         self.logger = Logger('Console', Logger.INFO)
+        self.last_sys_msg = None
 
         if '-debug' in argv:
             self.test_mode = True
@@ -32,5 +33,11 @@ class Console:
         if self.system_alert_func is None:
             self.logger.show_value(Logger.INFO, 'system_alert is None', msg)
             return
+
         self.logger.show_value(Logger.INFO, 'system_alert', msg)
+
+        if self.last_sys_msg == msg:
+            return
+
         self.system_alert_func(msg)
+        self.last_sys_msg = msg
