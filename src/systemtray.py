@@ -22,7 +22,7 @@ class Form(QSystemTrayIcon):
         self.logger = Logger('SysTray', Logger.INFO)
 
         self.console = console
-        console.system_alert_func = self.system_alert
+        self.console.system_alert_func = self.system_alert
 
         self.icon = util.load_icon(config.icon_small)
         self.setIcon(self.icon)

@@ -81,21 +81,39 @@ class API:
                     current_pw = self.ptt_pw
 
             self.login_finish = False
+            recover_level = 0
+            kick_other_login = False
             while True:
                 try:
                     ptt_bot.login(
                         self.ptt_id,
                         current_pw,
-                        kick_other_login=True
+                        kick_other_login=kick_other_login
                     )
                 except PTT.exceptions.WrongIDorPassword:
                     ptt_bot.log('帳號密碼錯誤')
+                    self.console.ptt_id = self.ptt_id
                     if not self.console.config.loaded:
                         self.console.config.load()
 
-                    if self.console.config.get(config.key_running):
-                        self.console.system_alert('從錯誤恢復中')
-                        current_pw = self.console.config.get(config.key_last_otp)
+                    if recover_level >= 2:
+                        self.console.system_alert('無法恢復')
+                        self.login_finish = True
+                        return
+                    elif self.console.config.get(config.key_running):
+
+                        kick_other_login = True
+                        if recover_level == 0:
+                            recover_level += 1
+                            self.console.system_alert('從錯誤恢復中')
+
+                            current_pw = self.console.config.get(config.key_current_otp)
+                            self.logger.show_value(Logger.INFO, '恢復最後密碼', current_pw)
+                        elif recover_level == 1:
+                            recover_level += 1
+
+                            current_pw = self.console.config.get(config.key_last_otp)
+                            self.logger.show_value(Logger.INFO, '恢復最後密碼', current_pw)
                         continue
                     else:
                         self.console.system_alert('帳號密碼錯誤')
@@ -117,6 +135,9 @@ class API:
                     self.login_finish = True
                     return
                 break
+
+            if recover_level != 0:
+                self.console.system_alert('從錯誤恢復成功')
 
             self.login_finish = True
             self.console.ptt_id = self.ptt_id
