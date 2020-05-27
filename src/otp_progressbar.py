@@ -328,7 +328,7 @@ class Form(QDialog):
         self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
         self.bar.setDataColors([(0., QColor.fromRgb(65, 105, 225))])
 
-        self.bar.setRange(0, 29)
+        self.bar.setRange(0, 30)
 
         self.setWindowTitle(f'{console.ptt_id} 驗證碼')
 
@@ -400,7 +400,6 @@ class Form(QDialog):
 
 
 def update_thread():
-    global console
     for i in range(10):
         print('===================================')
 
@@ -416,7 +415,7 @@ def update_thread():
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     import console
-    console = console.Console()
+    console = console.Console([])
 
     dlg = Form(console)
     dlg.showMinimized()
