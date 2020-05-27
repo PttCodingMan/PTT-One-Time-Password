@@ -1,6 +1,8 @@
 import json
 from PySide2.QtGui import QFont
 
+from log import Logger
+
 version = '0.1.0'
 
 key_otp_key = 'otp_key'
@@ -22,12 +24,19 @@ class Config:
         self.data = dict()
         self.loaded = False
 
+        self.logger = Logger('Config', Logger.INFO)
+
     def load(self):
+        if self.console.ptt_id is None:
+            self.logger.show_value(Logger.INFO, 'load fail', 'ptt id is None')
+            return
         current_path = f'./data/{self.console.ptt_id}/config.txt'
         try:
             with open(current_path, encoding='utf8') as f:
                 self.data = json.load(f)
+            self.logger.show_value(Logger.INFO, 'Load from data', 'Active')
         except FileNotFoundError:
+            self.logger.show_value(Logger.INFO, 'Create new data', 'Active')
             self.data = dict()
 
         self.loaded = True
