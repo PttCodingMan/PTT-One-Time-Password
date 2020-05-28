@@ -1,5 +1,6 @@
 import threading
 import time
+import hashlib
 import pyotp
 from PyPtt import PTT
 
@@ -11,7 +12,7 @@ class API:
     def __init__(self, console):
 
         self.console = console
-        self.logger = Logger('PTT', Logger.INFO)
+        self.logger = Logger('PTT', console.log_level)
 
         self.reset()
 
@@ -95,14 +96,16 @@ class API:
                 except PTT.exceptions.WrongIDorPassword:
                     ptt_bot.log('帳號密碼錯誤')
                     self.console.ptt_id = self.ptt_id
-                    if not self.console.config.loaded:
-                        self.console.config.load()
+                    self.console.config.load()
+
+                    hash_pw = self.console.config.get(config.key_hash_pw)
+                    current_hash_pw = hashlib.sha256(current_pw.encode('utf-8')).hexdigest()
 
                     if recover_level >= 2:
                         self.console.system_alert('無法恢復')
                         self.login_finish = True
                         return
-                    elif self.console.config.get(config.key_running):
+                    elif self.console.config.get(config.key_running) and hash_pw == current_hash_pw:
 
                         kick_other_login = True
                         if recover_level == 0:
