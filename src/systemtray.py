@@ -212,3 +212,6 @@ class Form(QSystemTrayIcon):
             self.logger.show(Logger.INFO, 'DoubleClick')
             if not self.login_success:
                 self.show_login_form()
+            else:
+                self.console.otp_form.showMinimized()
+                self.console.otp_form.showNormal()
