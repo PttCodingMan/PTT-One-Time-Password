@@ -84,6 +84,9 @@ class API:
             kick_other_login = False
             while True:
                 try:
+
+                    if self.call_logout:
+                        break
                     ptt_bot.login(
                         self.ptt_id,
                         current_pw,
