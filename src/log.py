@@ -6,7 +6,8 @@ class Logger:
     TRACE = 1
     DEBUG = 2
     INFO = 3
-    SILENT = 4
+    Important = 4
+    SILENT = 5
 
     def __init__(self, prefix, level, handler=None):
         self.prefix = prefix
@@ -108,7 +109,7 @@ if __name__ == '__main__':
 
         print('=================')
 
-    logger = Logger('test prefix', Logger.INFO)
+    logger = Logger('test prefix', console.log_level)
     logger.show_value(Logger.INFO, 'Test', 123)
     logger.show_value(Logger.INFO, 'Test', [1, 2])
 #                        ____________

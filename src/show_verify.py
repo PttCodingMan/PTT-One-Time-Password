@@ -16,7 +16,7 @@ class Form(QDialog):
         self.console = console
         self.otp_key = otp_key
 
-        self.logger = Logger('Rule', Logger.INFO)
+        self.logger = Logger('Rule', console.log_level)
 
         self.setWindowTitle("PttOTP 驗證視窗")
         self.setWindowIcon(util.load_icon(config.icon_small))

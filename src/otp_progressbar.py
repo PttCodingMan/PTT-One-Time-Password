@@ -6,8 +6,7 @@ import sys
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QApplication
 from PySide2.QtCore import Qt, QRectF
 
-from PySide2.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, \
-    QPalette, QGuiApplication
+from PySide2.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, QPalette, QGuiApplication
 from PySide2.QtWidgets import QDialog
 
 from log import Logger
@@ -317,23 +316,23 @@ class Form(QDialog):
     def __init__(self, console):
         super(type(self), self).__init__()
 
-        self.bar = QRoundProgressBar(console)
-        self.bar.setFixedSize(300, 300)
-
-        self.bar.setDataPenWidth(0)
-        self.bar.setOutlinePenWidth(0)
-        self.bar.setDonutThicknessRatio(0.92)
-        self.bar.setDecimals(0)
-        self.bar.setNullPosition(90)
-        self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
-        self.bar.setDataColors([(0., QColor.fromRgb(65, 105, 225))])
-
-        self.bar.setRange(0, 30)
+        # self.bar = QRoundProgressBar(console)
+        # self.bar.setFixedSize(300, 300)
+        #
+        # self.bar.setDataPenWidth(0)
+        # self.bar.setOutlinePenWidth(0)
+        # self.bar.setDonutThicknessRatio(0.92)
+        # self.bar.setDecimals(0)
+        # self.bar.setNullPosition(90)
+        # self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
+        # self.bar.setDataColors([(0., QColor.fromRgb(65, 105, 225))])
+        # self.bar.setRange(0, 30)
+        self.bar = None
 
         self.setWindowTitle(f'{console.ptt_id} 驗證碼')
 
         lay = QVBoxLayout()
-        lay.addWidget(self.bar)
+        # lay.addWidget(self.bar)
         self.setLayout(lay)
 
         self.console = console
@@ -345,6 +344,8 @@ class Form(QDialog):
 
         self.logger.show(Logger.INFO, '產生新驗證碼視窗')
 
+        if self.bar is not None:
+            self.bar.setFormat('000000')
         self.update_otp()
 
     def update_otp(self):
@@ -353,7 +354,8 @@ class Form(QDialog):
         self.logger.show_value(Logger.INFO, 'update_otp', data)
 
         current_data = f'{data}'
-        self.bar.setFormat(current_data)
+        if self.bar is not None:
+            self.bar.setFormat(current_data)
 
         if self.timer_thread is None:
             self.timer_thread = threading.Thread(target=self.timer)
@@ -371,7 +373,8 @@ class Form(QDialog):
 
             for value in range(current_sec, 30):
 
-                self.bar.setValue(value)
+                if self.bar is not None:
+                    self.bar.setValue(value)
                 self.logger.show_value(Logger.TRACE, 'value', value)
 
                 temp_sec = value
@@ -389,8 +392,9 @@ class Form(QDialog):
     def close_form(self):
         self.call_close = True
         time.sleep(0.5)
-        self.bar.close()
-        self.close()
+        if self.bar is not None:
+            self.bar.close()
+        # self.close()
 
     def closeEvent(self, event):
 

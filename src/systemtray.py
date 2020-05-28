@@ -19,7 +19,7 @@ class Form(QSystemTrayIcon):
     def __init__(self, console):
         super(Form, self).__init__(None)
 
-        self.logger = Logger('SysTray', Logger.INFO)
+        self.logger = Logger('SysTray', console.log_level)
 
         self.console = console
         self.console.system_alert_func = self.system_alert
@@ -53,8 +53,8 @@ class Form(QSystemTrayIcon):
 
             act = menu.addAction("顯示驗證碼")
             act.triggered.connect(self.otp_progressbar_func)
-            # act = menu.addAction("登出")
-            # act.triggered.connect(self.press_logout)
+            act = menu.addAction("登出")
+            act.triggered.connect(self.press_logout)
         else:
             self.logger.show_value(Logger.INFO, '設定選單', '登入')
             act = menu.addAction("登入")
@@ -108,10 +108,10 @@ class Form(QSystemTrayIcon):
 
         if self.console.otp_form is not None:
             self.console.current_otp = ''
-            self.console.otp_form.hide()
-            # self.console.otp_form.close()
-            # self.console.otp_form.close_form()
-            # self.console.otp_form = None
+            # self.console.otp_form.hide()
+            self.console.otp_form.close_form()
+            self.console.otp_form.close()
+            self.console.otp_form = None
 
         self.in_process = False
         self.reset()
@@ -127,6 +127,9 @@ class Form(QSystemTrayIcon):
         sys.exit()
 
     def show_login_form(self):
+
+        self.console.config.clear()
+
         if not self.show_login:
             return
         if self.in_process:
@@ -140,18 +143,8 @@ class Form(QSystemTrayIcon):
         if not login_form.next:
             self.in_process = False
             return
-
         self.login_success = True
 
-        if not os.path.exists('./data'):
-            os.makedirs('./data')
-
-        current_path = f'./data/{self.console.ptt_id}'
-        if not os.path.exists(current_path):
-            os.makedirs(current_path)
-
-        if not self.console.config.loaded:
-            self.console.config.load()
         self.console.config.set(config.key_running, True)
         self.console.config.write()
         if self.console.config.get(config.key_otp_key) is None:
@@ -201,6 +194,8 @@ class Form(QSystemTrayIcon):
 
         if self.console.otp_form is None:
             self.console.otp_form = otp_progressbar.Form(self.console)
+
+        time.sleep(2)
         self.console.otp_form.showMinimized()
         self.console.otp_form.showNormal()
 

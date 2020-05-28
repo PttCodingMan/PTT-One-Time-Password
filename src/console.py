@@ -9,12 +9,13 @@ class Console:
     system_alert_func = None
     otp_form = None
     current_otp = None
+    log_level = Logger.INFO
 
     test_mode = False
     test_local = True
 
     def __init__(self, argv):
-        self.logger = Logger('Console', Logger.INFO)
+        self.logger = Logger('Console', self.log_level)
         self.last_sys_msg = None
 
         if '-debug' in argv:

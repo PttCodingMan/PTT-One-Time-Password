@@ -8,8 +8,7 @@ import systemtray
 import config
 
 if __name__ == '__main__':
-    logger = Logger('OTP', Logger.INFO)
-
+    logger = Logger('OTP', Logger.Important)
     logger.show_value(Logger.INFO, '版本', config.version)
 
     app = QApplication(sys.argv)

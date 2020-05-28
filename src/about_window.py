@@ -18,7 +18,7 @@ class Form(QDialog):
         # self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         self.console = console
 
-        self.logger = Logger('About', Logger.INFO)
+        self.logger = Logger('About', console.log_level)
 
         self.setWindowTitle("關於 Ptt OTP")
 

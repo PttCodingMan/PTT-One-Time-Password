@@ -1,12 +1,9 @@
-import sys
 import time
 
 from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QDialog)
 
 from PySide2.QtCore import Qt
-
-# from PySide2.QtGui import QIcon, QPixmap
-# from PySide2.QtCore import QByteArray
+import hashlib
 
 import util
 import config
@@ -20,7 +17,7 @@ class Form(QDialog):
         super(Form, self).__init__(parent)
         self.console = console
 
-        self.logger = Logger('Login', Logger.INFO)
+        self.logger = Logger('Login', console.log_level)
 
         self.setWindowTitle("PttOTP 登入視窗")
 
@@ -88,7 +85,13 @@ class Form(QDialog):
         self.ptt_adapter = None
         self.next = False
 
-    # Greets the user
+    def wait_login(self, ptt_id, ptt_pw):
+
+        self.ptt_adapter.login(ptt_id, ptt_pw)
+        while not self.ptt_adapter.login_finish:
+            time.sleep(0.5)
+
+
     def login(self):
 
         ptt_id = self.edit_id.text()
@@ -101,9 +104,7 @@ class Form(QDialog):
 
         self.ptt_adapter = self.console.ptt_adapter
 
-        self.ptt_adapter.login(ptt_id, ptt_pw)
-        while not self.ptt_adapter.login_finish:
-            time.sleep(0.5)
+        self.wait_login(ptt_id, ptt_pw)
 
         if not self.ptt_adapter.login_success:
             self.edit_id.setText('')
@@ -113,6 +114,12 @@ class Form(QDialog):
         self.logger.show(Logger.INFO, '登入成功')
         self.next = True
         self.console.ptt_id = ptt_id
+
+        self.console.config.load()
+
+        hash_value = hashlib.sha256(ptt_pw.encode('utf-8')).hexdigest()
+        self.console.config.set(config.key_hash_pw, hash_value)
+        self.console.config.write()
 
         self.close()
 

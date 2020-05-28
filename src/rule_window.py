@@ -18,7 +18,7 @@ class Form(QDialog):
         self.setWindowFlags(flag)
         self.console = console
 
-        self.logger = Logger('Rule', Logger.INFO)
+        self.logger = Logger('Rule', console.log_level)
 
         self.setWindowTitle("PttOTP 使用守則")
 
