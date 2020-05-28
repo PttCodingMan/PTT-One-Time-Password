@@ -99,7 +99,10 @@ class API:
                     self.console.config.load()
 
                     hash_pw = self.console.config.get(config.key_hash_pw)
-                    current_hash_pw = hashlib.sha256(current_pw.encode('utf-8')).hexdigest()
+                    current_hash_pw = hashlib.sha256(self.ptt_pw.encode('utf-8')).hexdigest()
+
+                    self.logger.show_value(Logger.DEBUG, 'hash_pw', hash_pw)
+                    self.logger.show_value(Logger.DEBUG, 'current_hash_pw', current_hash_pw)
 
                     if recover_level >= 2:
                         self.console.system_alert('無法恢復')
