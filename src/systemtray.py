@@ -80,6 +80,7 @@ class Form(QSystemTrayIcon):
 
         self.console.otp_form.showMinimized()
         self.console.otp_form.showNormal()
+        self.console.otp_form.exec_()
 
     def about_func(self):
 
@@ -102,16 +103,16 @@ class Form(QSystemTrayIcon):
             return
         self.in_process = True
 
+        if self.console.otp_form is not None:
+            self.console.current_otp = ''
+            self.console.otp_form.hide()
+            # self.console.otp_form.close_form()
+            # self.console.otp_form.close()
+            # self.console.otp_form = None
+
         self.login_success = False
         self.set_menu(False)
         self.console.ptt_adapter.logout()
-
-        if self.console.otp_form is not None:
-            self.console.current_otp = ''
-            # self.console.otp_form.hide()
-            self.console.otp_form.close_form()
-            self.console.otp_form.close()
-            self.console.otp_form = None
 
         self.in_process = False
         self.reset()
@@ -161,7 +162,8 @@ class Form(QSystemTrayIcon):
 
             otp_key = pyotp.random_base32()
 
-            otp_url = pyotp.totp.TOTP(otp_key).provisioning_uri(self.console.ptt_id, issuer_name="Ptt OTP")
+            otp_url = pyotp.totp.TOTP(otp_key).provisioning_uri(self.console.ptt_id,
+                                                                issuer_name="Ptt One Time Password")
             img = qrcode.make(otp_url)
             img.save(f'./{self.console.ptt_id}_temp.png')
 
@@ -195,7 +197,6 @@ class Form(QSystemTrayIcon):
         if self.console.otp_form is None:
             self.console.otp_form = otp_progressbar.Form(self.console)
 
-        time.sleep(2)
         self.console.otp_form.showMinimized()
         self.console.otp_form.showNormal()
 
