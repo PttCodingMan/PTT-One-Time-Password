@@ -1,10 +1,12 @@
 import sys
 import os
-from PySide2.QtWidgets import (QLabel, QApplication,
-                               QVBoxLayout, QDialog)
+# from PySide2.QtWidgets import (QLabel, QApplication,
+#                                QVBoxLayout, QDialog)
 
-from PySide2.QtCore import Qt
-from PySide2.QtGui import QPixmap
+# from PySide2.QtCore import Qt
+
+from PyQt5.QtWidgets import QLabel, QApplication, QVBoxLayout, QDialog
+from PyQt5.QtCore import Qt
 
 import util
 import config

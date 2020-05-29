@@ -1,9 +1,9 @@
 import time
-
-from PySide2.QtWidgets import (QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QDialog)
-
-from PySide2.QtCore import Qt
 import hashlib
+
+from PyQt5.QtWidgets import (QLabel, QLineEdit, QPushButton, QVBoxLayout, QHBoxLayout, QDialog)
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 
 import util
 import config
@@ -24,7 +24,7 @@ class Form(QDialog):
         self.setMinimumWidth(260)
         self.setMinimumHeight(150)
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
-        self.setWindowIcon(util.load_icon(config.icon_small))
+        self.setWindowIcon(QIcon(util.load_icon(config.icon_small)))
         # Create widgets
 
         layout = QVBoxLayout()

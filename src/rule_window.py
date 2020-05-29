@@ -1,8 +1,9 @@
 import sys
-from PySide2.QtWidgets import (QLabel, QHBoxLayout, QPushButton, QApplication,
-                               QVBoxLayout, QDialog)
 
-from PySide2.QtCore import Qt
+from PyQt5.QtWidgets import QLabel, QHBoxLayout, QPushButton, QApplication, QVBoxLayout, QDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
+
 import util
 import config
 from log import Logger
@@ -23,7 +24,7 @@ class Form(QDialog):
         self.setWindowTitle("PttOTP 使用守則")
 
         self.setMinimumWidth(250)
-        self.setWindowIcon(util.load_icon(config.icon_small))
+        self.setWindowIcon(QIcon(util.load_icon(config.icon_small)))
 
         rule_text = '''
 以下為 Ptt OTP 使用守則，如不同意或無法遵守

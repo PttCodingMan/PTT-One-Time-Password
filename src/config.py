@@ -1,6 +1,6 @@
 import json
 import os
-from PySide2.QtGui import QFont
+from PyQt5.QtGui import QFont
 
 from log import Logger
 

@@ -1,5 +1,5 @@
 import sys
-from PySide2.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication
 import ptt_adapter
 
 from log import Logger
