@@ -60,7 +60,7 @@
 -------------------
 ###### [PyPtt](https://github.com/PttCodingMan/PyPtt)
 ###### [pyotp](https://github.com/pyotp/pyotp)
-###### [PySide2](https://wiki.qt.io/Qt_for_Python)
+###### [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)
 ###### [python-qrcode](https://github.com/lincolnloop/python-qrcode)
 
 

@@ -3,8 +3,11 @@ import os
 import time
 import pyotp
 import qrcode
-from PySide2.QtWidgets import QSystemTrayIcon
-from PySide2.QtWidgets import QMenu
+# from PySide2.QtWidgets import QSystemTrayIcon
+# from PySide2.QtWidgets import QMenu
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
+from PyQt5.QtGui import QIcon
+
 import util
 import config
 from log import Logger
@@ -25,7 +28,7 @@ class Form(QSystemTrayIcon):
         self.console.system_alert_func = self.system_alert
 
         self.icon = util.load_icon(config.icon_small)
-        self.setIcon(self.icon)
+        self.setIcon(QIcon(self.icon))
 
         self.setToolTip('Ptt OTP')
 
@@ -201,7 +204,7 @@ class Form(QSystemTrayIcon):
         self.console.otp_form.showNormal()
 
     def system_alert(self, msg):
-        self.showMessage('Ptt OTP', msg, self.icon)
+        self.showMessage('Ptt OTP', msg, QIcon(self.icon))
 
     def icon_clicked(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:

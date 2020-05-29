@@ -1,10 +1,11 @@
 
 import sys
 import pyotp
-from PySide2.QtWidgets import (QLabel, QHBoxLayout, QPushButton, QApplication,
-                               QVBoxLayout, QDialog, QLineEdit)
-from PySide2.QtGui import QPixmap
-from PySide2.QtCore import Qt
+
+from PyQt5.QtWidgets import QLabel, QHBoxLayout, QPushButton, QApplication, QVBoxLayout, QDialog, QLineEdit
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QIcon
+
 import util
 import config
 from log import Logger
@@ -19,7 +20,7 @@ class Form(QDialog):
         self.logger = Logger('Rule', console.log_level)
 
         self.setWindowTitle("PttOTP 驗證視窗")
-        self.setWindowIcon(util.load_icon(config.icon_small))
+        self.setWindowIcon(QIcon(util.load_icon(config.icon_small)))
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
 
         rule_text = '''

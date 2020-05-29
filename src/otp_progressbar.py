@@ -3,11 +3,10 @@ import time
 import threading
 import sys
 
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QApplication, QLabel
-from PySide2.QtCore import Qt, QRectF
-
-from PySide2.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, QPalette, QGuiApplication
-from PySide2.QtWidgets import QDialog
+from PyQt5.QtCore import Qt
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, QPalette, QGuiApplication, QIcon
+from PyQt5.QtWidgets import QDialog, QWidget, QVBoxLayout, QApplication
 
 from log import Logger
 import util
@@ -340,7 +339,7 @@ class Form(QDialog):
         self.call_close = False
         self.run_background = True
         self.logger = Logger('Progress', Logger.INFO)
-        self.setWindowIcon(util.load_icon(config.icon_small))
+        self.setWindowIcon(QIcon(util.load_icon(config.icon_small)))
 
         self.logger.show(Logger.INFO, '產生新驗證碼視窗')
 
