@@ -1,8 +1,5 @@
 import sys
 
-from PySide2.QtWidgets import QApplication
-from PySide2.QtWidgets import QMessageBox
-
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import QByteArray
 

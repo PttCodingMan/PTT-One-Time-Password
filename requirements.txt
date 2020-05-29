@@ -1,4 +1,4 @@
-pyotp==2.3.0
-PyPtt==0.9.16
-PySide2==5.14.2.1
-qrcode==6.1
+pyotp
+PyPtt
+PyQt5
+qrcode
