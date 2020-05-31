@@ -9,6 +9,7 @@ import util
 import config
 
 from log import Logger
+from globalobject import GlobalObject
 
 
 class Form(QDialog):
@@ -122,6 +123,7 @@ class Form(QDialog):
         self.console.config.write()
 
         self.close()
+        GlobalObject().dispatchEvent("login_success")
 
     def closeEvent(self, event):
         if not self.next:

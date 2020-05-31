@@ -6,7 +6,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import QRectF
 from PyQt5.QtGui import QFont, QImage, QPainter, QPen, QPainterPath, QConicalGradient, QGradient, QColor, QPalette, QGuiApplication, QIcon
-from PyQt5.QtWidgets import QDialog, QWidget, QVBoxLayout, QApplication
+from PyQt5.QtWidgets import QDialog, QWidget, QVBoxLayout, QApplication, QLabel
 
 from log import Logger
 import util
@@ -326,7 +326,6 @@ class Form(QDialog):
         self.bar.setBarStyle(QRoundProgressBar.StyleDonut)
         self.bar.setDataColors([(0., QColor.fromRgb(65, 105, 225))])
         self.bar.setRange(0, 30)
-        # self.bar = QLabel()
 
         self.setWindowTitle(f'{console.ptt_id} 驗證碼')
 
@@ -358,9 +357,10 @@ class Form(QDialog):
             # self.bar.setText(current_data)
 
         if self.timer_thread is None:
-            self.timer_thread = threading.Thread(target=self.timer)
-            self.timer_thread.daemon = True
-            self.timer_thread.start()
+            pass
+            # self.timer_thread = threading.Thread(target=self.timer)
+            # self.timer_thread.daemon = True
+            # self.timer_thread.start()
 
     def timer(self):
 
@@ -389,13 +389,6 @@ class Form(QDialog):
                     # self.logger.show_value(Logger.INFO, 'temp_sec', temp_sec)
 
         self.logger.show(Logger.INFO, 'timer finish')
-
-    # def close_form(self):
-    #     self.call_close = True
-    #     time.sleep(0.5)
-        # if self.bar is not None:
-        #     self.bar.close()
-        # self.close()
 
     def closeEvent(self, event):
 

@@ -3,8 +3,7 @@ import os
 import time
 import pyotp
 import qrcode
-# from PySide2.QtWidgets import QSystemTrayIcon
-# from PySide2.QtWidgets import QMenu
+
 from PyQt5.QtWidgets import QSystemTrayIcon, QMenu
 from PyQt5.QtGui import QIcon
 
@@ -16,7 +15,7 @@ import rule_window
 import show_verify
 import about_window
 import otp_progressbar
-
+from globalobject import GlobalObject
 
 class Form(QSystemTrayIcon):
     def __init__(self, console):
@@ -35,6 +34,7 @@ class Form(QSystemTrayIcon):
         self.show()
 
         self.activated.connect(self.icon_clicked)
+        GlobalObject().addEventListener("login_success", self.otp_progressbar_func)
 
         self.show_login = True
         self.reset()
@@ -56,8 +56,8 @@ class Form(QSystemTrayIcon):
 
             act = menu.addAction("顯示驗證碼")
             act.triggered.connect(self.otp_progressbar_func)
-            act = menu.addAction("登出")
-            act.triggered.connect(self.press_logout)
+            # act = menu.addAction("登出")
+            # act.triggered.connect(self.press_logout)
         else:
             self.logger.show_value(Logger.INFO, '設定選單', '登入')
             act = menu.addAction("登入")
@@ -110,7 +110,7 @@ class Form(QSystemTrayIcon):
             self.console.current_otp = ''
             self.console.otp_form.hide()
             # self.console.otp_form.close_form()
-            # self.console.otp_form.close()
+            self.console.otp_form.close()
             # self.console.otp_form = None
 
         self.login_success = False
@@ -197,12 +197,6 @@ class Form(QSystemTrayIcon):
 
         self.in_process = False
 
-        if self.console.otp_form is None:
-            self.console.otp_form = otp_progressbar.Form(self.console)
-
-        self.console.otp_form.showMinimized()
-        self.console.otp_form.showNormal()
-
     def system_alert(self, msg):
         self.showMessage('Ptt OTP', msg, QIcon(self.icon))
 
@@ -212,5 +206,4 @@ class Form(QSystemTrayIcon):
             if not self.login_success:
                 self.show_login_form()
             else:
-                self.console.otp_form.showMinimized()
-                self.console.otp_form.showNormal()
+                self.otp_progressbar_func()
